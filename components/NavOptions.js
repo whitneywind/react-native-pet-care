@@ -12,24 +12,27 @@ import tw from "twrnc";
 const navData = [
   {
     id: "1",
-    title: "Exercise",
+    title: "Activity",
     icon: "paw",
     iconType: "font-awesome-5",
-    screen: "HealthScreen",
+    screen: "LandingScreen",
+    color: "bg-violet-500",
   },
   {
     id: "2",
-    title: "Nutrition",
-    icon: "drumstick-bite",
+    title: "Details",
+    icon: "info",
     iconType: "font-awesome-5",
-    screen: "HealthScreen",
+    screen: "DetailsScreen",
+    color: "bg-red-400",
   },
   {
     id: "3",
-    title: "Vet",
+    title: "Call Vet",
     icon: "heartbeat",
     iconType: "font-awesome-5",
-    screen: "HealthScreen",
+    screen: "DetailsScreen",
+    color: "bg-emerald-500",
   },
 ];
 const NavOptions = () => {
@@ -43,17 +46,17 @@ const NavOptions = () => {
       style={tw`pl-2 mb-6`}
       renderItem={({ item }) => (
         <TouchableOpacity
-          style={tw`py-4 bg-white m-2 w-27 flex rounded-lg`}
+          style={tw`py-3 ${item.color} m-2 w-27 flex rounded-lg`}
           onPress={() => navigation.navigate(item.screen)}
         >
           <View>
             <Icon
-              style={tw`p-2 bg-violet-500 rounded-full w-10 self-center`}
+              style={tw`p-2 rounded-full w-10 self-center text-white`}
               name={item.icon}
               color="white"
               type={item.iconType}
             />
-            <Text style={tw`mt-2 text-xl font-semibold text-center`}>
+            <Text style={tw`text-xl font-semibold text-white text-center`}>
               {item.title}
             </Text>
           </View>
