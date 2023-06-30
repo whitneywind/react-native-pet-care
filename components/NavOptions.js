@@ -24,15 +24,23 @@ const navData = [
     icon: "info",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "bg-red-400",
+    color: "bg-emerald-500",
   },
   {
     id: "3",
+    title: "Photos",
+    icon: "camera",
+    iconType: "font-awesome-5",
+    screen: "DetailsScreen",
+    color: "bg-yellow-500",
+  },
+  {
+    id: "4",
     title: "Call Vet",
     icon: "heartbeat",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "bg-emerald-500",
+    color: "bg-red-500",
   },
 ];
 const NavOptions = () => {
@@ -43,23 +51,23 @@ const NavOptions = () => {
       data={navData}
       horizontal
       keyExtractor={(item) => item.id}
-      style={tw`pl-2 mb-6`}
+      contentContainerStyle={tw`mb-10 w-[89%] mx-auto justify-between flex`}
       renderItem={({ item }) => (
         <TouchableOpacity
-          style={tw`py-3 ${item.color} m-2 w-27 flex rounded-lg`}
           onPress={() => navigation.navigate(item.screen)}
+          style={tw`w-18 flex rounded-lg`}
         >
-          <View>
+          <View style={tw`py-3 ${item.color} flex rounded-lg`}>
             <Icon
               style={tw`p-2 rounded-full w-10 self-center text-white`}
               name={item.icon}
               color="white"
               type={item.iconType}
             />
-            <Text style={tw`text-xl font-semibold text-white text-center`}>
-              {item.title}
-            </Text>
           </View>
+          <Text style={tw`text-md text-center mt-1 font-semibold`}>
+            {item.title}
+          </Text>
         </TouchableOpacity>
       )}
     />

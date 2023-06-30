@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 const LandingScreen = () => {
   const navigation = useNavigation();
   return (
-    <SafeAreaView>
+    <SafeAreaView style={tw`bg-white h-full`}>
       <View style={tw`pt-1 mb-16 w-full`}>
         <Icon name="dog" type="material-community" size={40} />
         <Text style={tw`text-center text-xl`}>Pet Place</Text>
@@ -37,7 +37,7 @@ const LandingScreen = () => {
           All pets deserve care and love
         </Text>
         <TouchableOpacity
-          style={tw`rounded-lg w-1/2 mx-auto rounded-full bg-orange-400 py-3 mt-12`}
+          style={tw`rounded-lg w-3/5 mx-auto rounded-full bg-emerald-500 py-3 mt-12`}
           onPress={() => navigation.navigate("GettingStartedScreen")}
         >
           <Text style={tw`text-center text-2xl text-white font-bold`}>

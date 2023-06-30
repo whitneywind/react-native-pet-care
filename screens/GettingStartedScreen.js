@@ -11,13 +11,44 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 import catImg from "../assets/images/graycat.png";
 import dogImg from "../assets/images/longdog.png";
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GettingStartedScreen = () => {
   const [selectedPet, setSelectedPet] = useState("");
   const [petGender, setPetGender] = useState("");
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+
+  let petData = null;
+
+  const getPetData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("petData");
+      if (value !== null) {
+        console.log("existing petData: ", value);
+        petData = JSON.parse(value);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const setPetData = async (values) => {
+    // TO-DO: try calling directly in here instead of outside variable by returning in getPetData and usign that returned value
+    console.log("valuese in setPet: ", values);
+    // getPetData();
+
+    // if (petData) {
+    //   petData.push({ ...values });
+    // } else {
+    //   petData = [{ ...values }];
+    // }
+    // try {
+    //   await AsyncStorage.setItem("petData", JSON.stringify(petData));
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  };
 
   return (
     <SafeAreaView style={tw`h-full`}>
@@ -34,11 +65,17 @@ const GettingStartedScreen = () => {
             unknownAge: false,
           }}
           onSubmit={(values) => {
-            console.log(values);
-            navigation.navigate("HomeScreen");
+            // console.log(typeof values);
+            setPetData(values);
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            setFieldValue,
+          }) => (
             <View>
               <Text style={tw`text-lg mt-4`}>What is your pet's name? *</Text>
               <TextInput
@@ -52,7 +89,10 @@ const GettingStartedScreen = () => {
               </Text>
               <View style={tw`flex w-full flex-row justify-around mb-6`}>
                 <TouchableOpacity
-                  onPress={() => setSelectedPet("dog")}
+                  onPress={() => {
+                    setFieldValue("petType", "dog");
+                    setSelectedPet("dog");
+                  }}
                   style={tw``}
                 >
                   <Image
@@ -72,8 +112,10 @@ const GettingStartedScreen = () => {
                   <Text style={tw`text-center`}>Dog</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setSelectedPet("cat")}
-                  style={tw``}
+                  onPress={() => {
+                    setFieldValue("petType", "cat");
+                    setSelectedPet("cat");
+                  }}
                 >
                   <Image
                     source={catImg}
@@ -139,9 +181,9 @@ const GettingStartedScreen = () => {
               </View>
               <TouchableOpacity
                 onPress={handleSubmit}
-                style={tw`rounded-full bg-orange-300 py-4`}
+                style={tw`rounded-full bg-emerald-500 py-4`}
               >
-                <Text style={tw`text-center text-lg font-semibold`}>
+                <Text style={tw`text-center text-white text-lg font-semibold`}>
                   Create Pet Profile
                 </Text>
               </TouchableOpacity>

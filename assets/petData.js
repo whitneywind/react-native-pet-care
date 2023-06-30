@@ -1,7 +1,8 @@
 import DogImg from "./images/dog.png";
 import CatImg from "./images/cat.png";
 import MaggieImg from "./images/maggie.jpg";
-import PeachesImg from "./images/peaches.jpg";
+import PeachesImg from "./images/peaches2.jpg";
+import NoodleImg from "./images/noodle.jpg";
 
 export const petData = [
   {
@@ -15,21 +16,21 @@ export const petData = [
   },
   {
     id: 2,
+    name: "Noodle",
+    avatar: DogImg,
+    species: "dog",
+    age: "2 years 1 month",
+    gender: "male",
+    image: NoodleImg,
+  },
+  {
+    id: 3,
     name: "Peaches",
     avatar: CatImg,
     species: "cat",
     age: "17 years 9 months",
     gender: "female",
     image: PeachesImg,
-  },
-  {
-    id: 3,
-    name: "Noodle",
-    avatar: DogImg,
-    species: "dog",
-    age: "2 years 1 month",
-    gender: "male",
-    image: DogImg,
   },
   //   {
   //     id: 4,

@@ -1,15 +1,17 @@
 import tw from "twrnc";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Icon } from "@rneui/base";
+import { useNavigation } from "@react-navigation/native";
 
 const Reminders = () => {
+  const navigation = useNavigation();
   const handlePress = () => {
     navigation.navigate("LandingScreen");
   };
   return (
     <View
       style={[
-        tw`w-[89%] mx-auto bg-violet-500 rounded-xl mb-6 border-2 border-white`,
+        tw`w-[89%] mx-auto bg-emerald-500 rounded-xl mb-8 border-2 border-white`,
       ]}
     >
       <TouchableOpacity
