@@ -13,13 +13,21 @@ import catImg from "../assets/images/graycat.png";
 import dogImg from "../assets/images/longdog.png";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { setPets } from "../slices/petsSlice";
 
 const GettingStartedScreen = () => {
+  const dispatch = useDispatch();
+
   const [selectedPet, setSelectedPet] = useState("");
   const [petGender, setPetGender] = useState("");
   // const navigation = useNavigation();
 
   let petData = null;
+
+  useEffect(() => {
+    getPetData();
+  }, []);
 
   const getPetData = async () => {
     try {
@@ -35,19 +43,21 @@ const GettingStartedScreen = () => {
 
   const setPetData = async (values) => {
     // TO-DO: try calling directly in here instead of outside variable by returning in getPetData and usign that returned value
-    console.log("valuese in setPet: ", values);
-    // getPetData();
+    getPetData();
 
-    // if (petData) {
-    //   petData.push({ ...values });
-    // } else {
-    //   petData = [{ ...values }];
-    // }
-    // try {
-    //   await AsyncStorage.setItem("petData", JSON.stringify(petData));
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    if (petData) {
+      petData.push({ ...values });
+      // console.log("option1: ", petData);
+    } else {
+      petData = [{ ...values }];
+      // console.log("option2: ", petData);
+    }
+    try {
+      await AsyncStorage.setItem("petData", JSON.stringify(petData));
+      const val = await AsyncStorage.getItem("petData");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -62,7 +72,6 @@ const GettingStartedScreen = () => {
             petName: "",
             petAgeYears: "",
             petAgeMonths: "",
-            unknownAge: false,
           }}
           onSubmit={(values) => {
             // console.log(typeof values);
