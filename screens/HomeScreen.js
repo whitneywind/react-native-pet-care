@@ -6,35 +6,37 @@ import PetsList from "../components/PetsList";
 import tw from "twrnc";
 import { useSelector } from "react-redux";
 import germanShepImg from "../assets/images/germanshepherd.png";
+import MaggieImg from "../assets/images/maggie.jpg";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
-  // if no curr pet bc pet data empty create blank page with just add pet option (to starting page) with conditional rendering
+  // TO-DO: add center component to push pets list lower
 
   // render pets below with data from state/storage
   // we also need the ability to change the current pet in this component
 
-  // link to pages below should reflect current pet - dynamic pages needed? or just one pagee where the info reflects current pet
+  // link to pages below should reflect current pet - dynamic pages needed? or just one page where the info reflects current pet
 
-  const petData = useSelector((state) => state.pets);
+  const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
 
-  // console.log("current pet: ", currentPet);
-  // console.log("petdata in the state: ", petData);
-
+  console.log("curr pet as of home: ", currentPet);
   const navigation = useNavigation();
 
   if (!petData) {
     return (
       <SafeAreaView>
-        <View>
-          <Text>No pet data! Add a new pet to continue</Text>
+        <View style={tw`mx-auto w-1/2`}>
+          <View style={tw`pt-1 mb-5 w-full`}>
+            <Icon name="dog" type="material-community" size={40} />
+          </View>
+          <Text style={tw`text-4xl text-center mt-16`}>Add a pet now</Text>
           <TouchableOpacity
-            style={tw`mx-10 mt-12`}
+            style={tw`mt-8`}
             onPress={() => navigation.navigate("GettingStartedScreen")}
           >
-            <Icon name="pluscircle" type="antdesign" size={70} color="white" />
+            <Icon name="pluscircle" type="antdesign" size={70} color="gray" />
             <Text style={tw`text-white text-lg pt-4`}>Add New Pet</Text>
           </TouchableOpacity>
         </View>
@@ -55,7 +57,6 @@ const HomeScreen = () => {
             <Text style={tw`text-3xl pb-4`}>Welcome back</Text>
             <Text style={tw`text-xl text-gray-500`}>
               How is
-              {/* current pet's name */}
               <Text style={tw`font-bold text-black`}>
                 {" "}
                 {currentPet.petName}{" "}
@@ -63,15 +64,15 @@ const HomeScreen = () => {
               today?
             </Text>
           </View>
-          <TouchableOpacity style={tw`bg-emerald-500 rounded-full p-1`}>
+          <TouchableOpacity style={tw``}>
             <Image
               style={{
                 width: 100,
                 height: 100,
                 resizeMode: "contain",
-                borderRadius: 40,
+                borderRadius: 50,
               }}
-              source={germanShepImg}
+              source={MaggieImg}
             />
           </TouchableOpacity>
         </View>

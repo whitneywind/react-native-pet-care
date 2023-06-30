@@ -13,30 +13,41 @@ import catImg from "../assets/images/graycat.png";
 import dogImg from "../assets/images/longdog.png";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPet, setPets } from "../slices/petsSlice";
 import { useNavigation } from "@react-navigation/native";
 
 const GettingStartedScreen = () => {
-  const dispatch = useDispatch();
+  // TO-DO: choose icon to use in place of photo
+  // TO-DO: make button unclickable until required info filled out
 
+  const currPetData = useSelector((state) => state.pets);
+  const currPet = useSelector((state) => state.pets.currentPet);
+
+  console.log("landingscreen pet data status: ", currPetData);
+  console.log("landingscreen currPet status: ", currPet);
+
+  const dispatch = useDispatch();
   const [selectedPet, setSelectedPet] = useState("");
   const [petGender, setPetGender] = useState("");
+
   const navigation = useNavigation();
 
   const setPetData = async (values) => {
     try {
       const value = await AsyncStorage.getItem("petData");
       let petData = value ? JSON.parse(value) : [];
-      petData.push({ ...values });
+      petData.push({ ...values, id: petData.length });
 
-      // console.log("this is the pet data: ", petData);
+      // await AsyncStorage.removeItem("petData");
 
       await AsyncStorage.setItem("petData", JSON.stringify(petData));
 
       // update redux store with new pet data
       dispatch(setPets(petData));
       dispatch(setCurrentPet(petData[petData.length - 1]));
+
+      // console.log("now this is under petData", petData);
     } catch (error) {
       console.error("error setting pet data: ", error);
     }
@@ -54,6 +65,8 @@ const GettingStartedScreen = () => {
             petName: "",
             petAgeYears: "",
             petAgeMonths: "",
+            petGender: "",
+            avatar: "",
           }}
           onSubmit={(values) => {
             setPetData(values);
@@ -74,6 +87,7 @@ const GettingStartedScreen = () => {
                 onChangeText={handleChange("petName")}
                 onBlur={handleBlur("petName")}
                 value={values.petName}
+                required
               />
               <Text style={tw`text-lg mb-2`}>
                 What type of pet do you have? *
@@ -82,6 +96,7 @@ const GettingStartedScreen = () => {
                 <TouchableOpacity
                   onPress={() => {
                     setFieldValue("petType", "dog");
+                    setFieldValue("avatar", "dog");
                     setSelectedPet("dog");
                   }}
                   style={tw``}
@@ -105,6 +120,7 @@ const GettingStartedScreen = () => {
                 <TouchableOpacity
                   onPress={() => {
                     setFieldValue("petType", "cat");
+                    setFieldValue("avatar", "cat");
                     setSelectedPet("cat");
                   }}
                 >
@@ -152,7 +168,10 @@ const GettingStartedScreen = () => {
               </Text>
               <View style={tw`flex w-full flex-row justify-between mb-10 mt-2`}>
                 <TouchableOpacity
-                  onPress={() => setPetGender("female")}
+                  onPress={() => {
+                    setPetGender("female");
+                    setFieldValue("petGender", "female");
+                  }}
                   style={[
                     tw`border-2 border-gray-300 p-2 w-1/2`,
                     petGender === "female" && tw`border-green-500`,
@@ -161,7 +180,10 @@ const GettingStartedScreen = () => {
                   <Text style={tw`text-center`}>Female</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setPetGender("male")}
+                  onPress={() => {
+                    setPetGender("male");
+                    setFieldValue("petGender", "male");
+                  }}
                   style={[
                     tw`border-2 border-gray-300 p-2 w-1/2`,
                     petGender === "male" && tw`border-green-500`,

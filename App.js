@@ -2,12 +2,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
-import HomeScreen from "./screens/HomeScreen";
-import LandingScreen from "./screens/LandingScreen";
-import DetailsScreen from "./screens/DetailsScreen";
-import GettingStartedScreen from "./screens/GettingStartedScreen";
-import ActivityScreen from "./screens/ActivityScreen";
-import { store } from "./store";
+import HomeScreen from "./screens/HomeScreen.js";
+import LandingScreen from "./screens/LandingScreen.js";
+import DetailsScreen from "./screens/DetailsScreen.js";
+import GettingStartedScreen from "./screens/GettingStartedScreen.js";
+import ActivityScreen from "./screens/ActivityScreen.js";
+import { store } from "./store.ts";
 
 export default function App() {
   const Stack = createStackNavigator();

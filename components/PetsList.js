@@ -1,11 +1,21 @@
 import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
-import { petData } from "../assets/petData";
+// import { petData } from "../assets/petData";
 import tw from "twrnc";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import dogImg from "../assets/images/germanshepherd.png";
+import catImg from "../assets/images/fluffycat.png";
 
 const PetsList = () => {
+  // TO-DO: remove pet functionality - filter through arr and reset storage and state
   const navigation = useNavigation();
+  const petData = useSelector((state) => state.pets.pets);
+  const currPet = useSelector((state) => state.pets.currentPet);
+
+  // console.log("pet is array", typeof petData);
+  // console.log("currpte: ", currPet);
+
   return (
     <View style={tw`px-6`}>
       <View style={tw`w-full flex flex-row justify-between pt-1`}>
@@ -29,7 +39,7 @@ const PetsList = () => {
         renderItem={({ item }) => (
           <TouchableOpacity style={tw`mr-5 bg-slate-100`}>
             <View
-              style={tw`pt-4 px-3 bg-white rounded-lg shadow-lg elevation-4 border border-white border-2`}
+              style={tw`px-3 bg-white rounded-lg shadow-lg elevation-4 border border-white border-2`}
             >
               <Image
                 style={[
@@ -41,12 +51,9 @@ const PetsList = () => {
                   },
                   tw`self-center`,
                 ]}
-                source={item.image}
+                source={item.avatar === "dog" ? dogImg : catImg}
               />
-              <Text style={tw`text-2xl pt-2 text-center`}>{item.name}</Text>
-              <Text style={tw`text-gray-400 text-center pb-2 px-8`}>
-                {item.age}
-              </Text>
+              <Text style={tw`text-2xl text-center`}>{item.petName}</Text>
             </View>
           </TouchableOpacity>
         )}
