@@ -65,9 +65,7 @@ const NavOptions = () => {
               type={item.iconType}
             />
           </View>
-          <Text style={tw`text-md text-center mt-1 font-semibold`}>
-            {item.title}
-          </Text>
+          <Text style={tw`text-center mt-1 font-semibold`}>{item.title}</Text>
         </TouchableOpacity>
       )}
     />

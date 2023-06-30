@@ -25,11 +25,11 @@ const PetsList = () => {
         data={petData}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`rounded-md p-3`}
+        contentContainerStyle={tw`rounded-lg p-3`}
         renderItem={({ item }) => (
           <TouchableOpacity style={tw`mr-5 bg-slate-100`}>
             <View
-              style={tw`pt-4 px-3 bg-white rounded-md shadow-md elevation-4 border border-white border-2`}
+              style={tw`pt-4 px-3 bg-white rounded-lg shadow-lg elevation-4 border border-white border-2`}
             >
               <Image
                 style={[

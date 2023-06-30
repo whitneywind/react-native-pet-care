@@ -11,52 +11,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 import catImg from "../assets/images/graycat.png";
 import dogImg from "../assets/images/longdog.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { setPets } from "../slices/petsSlice";
+import { setCurrentPet, setPets } from "../slices/petsSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const GettingStartedScreen = () => {
   const dispatch = useDispatch();
 
   const [selectedPet, setSelectedPet] = useState("");
   const [petGender, setPetGender] = useState("");
-  // const navigation = useNavigation();
-
-  let petData = null;
-
-  useEffect(() => {
-    getPetData();
-  }, []);
-
-  const getPetData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("petData");
-      if (value !== null) {
-        console.log("existing petData: ", value);
-        petData = JSON.parse(value);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const navigation = useNavigation();
 
   const setPetData = async (values) => {
-    // TO-DO: try calling directly in here instead of outside variable by returning in getPetData and usign that returned value
-    getPetData();
-
-    if (petData) {
-      petData.push({ ...values });
-      // console.log("option1: ", petData);
-    } else {
-      petData = [{ ...values }];
-      // console.log("option2: ", petData);
-    }
     try {
+      const value = await AsyncStorage.getItem("petData");
+      let petData = value ? JSON.parse(value) : [];
+      petData.push({ ...values });
+
+      // console.log("this is the pet data: ", petData);
+
       await AsyncStorage.setItem("petData", JSON.stringify(petData));
-      const val = await AsyncStorage.getItem("petData");
-    } catch (e) {
-      console.log(e);
+
+      // update redux store with new pet data
+      dispatch(setPets(petData));
+      dispatch(setCurrentPet(petData[petData.length - 1]));
+    } catch (error) {
+      console.error("error setting pet data: ", error);
     }
   };
 
@@ -74,8 +56,8 @@ const GettingStartedScreen = () => {
             petAgeMonths: "",
           }}
           onSubmit={(values) => {
-            // console.log(typeof values);
             setPetData(values);
+            navigation.navigate("HomeScreen");
           }}
         >
           {({

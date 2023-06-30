@@ -8,7 +8,7 @@ const initialState = {
 export const petsSlice = createSlice({
   name: "pets",
   initialState,
-  reducer: {
+  reducers: {
     setPets: (state, action) => {
       state.pets = action.payload;
     },
@@ -19,7 +19,5 @@ export const petsSlice = createSlice({
 });
 
 export const { setPets, setCurrentPet } = petsSlice.actions;
-
-// export const selectPet = (state) => state.nav.location;
 
 export default petsSlice.reducer;
