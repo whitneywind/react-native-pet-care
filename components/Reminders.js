@@ -27,7 +27,7 @@ const Reminders = () => {
         <Icon name="calendar" type="antdesign" color="white" size={45} />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("DetailsScreen")}
+        onPress={() => navigation.navigate("ActivityScreen")}
         style={tw`flex flex-row justify-between bg-violet-500 rounded-xl items-center pl-3 pr-6 py-4`}
       >
         <View style={tw`w-[70%]`}>

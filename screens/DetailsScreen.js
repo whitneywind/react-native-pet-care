@@ -109,7 +109,7 @@ const DetailsScreen = () => {
             Activity Log
           </Text>
           <TouchableOpacity>
-            <View style={tw`bg-emerald-300 rounded-lg py-2 w-1/3 my-3 mx-auto`}>
+            <View style={tw`bg-emerald-300 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
                 type="feather"
