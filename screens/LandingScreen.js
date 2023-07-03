@@ -42,7 +42,7 @@ const LandingScreen = () => {
 
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={tw`bg-white h-full`}>
+    <SafeAreaView style={tw`h-full`}>
       <View style={tw`pt-1 mb-16 w-full`}>
         <Icon name="dog" type="material-community" size={40} />
         <Text style={tw`text-center text-xl`}>Pet Place</Text>

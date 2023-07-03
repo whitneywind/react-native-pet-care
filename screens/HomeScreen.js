@@ -5,7 +5,6 @@ import Reminders from "../components/Reminders";
 import PetsList from "../components/PetsList";
 import tw from "twrnc";
 import { useSelector } from "react-redux";
-import germanShepImg from "../assets/images/germanshepherd.png";
 import MaggieImg from "../assets/images/maggie.jpg";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
@@ -59,7 +58,7 @@ const HomeScreen = () => {
               How is
               <Text style={tw`font-bold text-black`}>
                 {" "}
-                {currentPet.petName}{" "}
+                {currentPet ? currentPet.petName : "your pet"}{" "}
               </Text>
               today?
             </Text>

@@ -19,7 +19,7 @@ const PetsList = () => {
   return (
     <View style={tw`px-6`}>
       <View style={tw`w-full flex flex-row justify-between pt-1`}>
-        <Text style={tw`font-semibold text-3xl mb-4`}>My Pets</Text>
+        <Text style={tw`font-semibold text-2xl mb-4`}>My Pets</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate("GettingStartedScreen")}
         >
@@ -35,17 +35,15 @@ const PetsList = () => {
         data={petData}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`rounded-lg p-3`}
+        contentContainerStyle={tw`rounded-lg p-2`}
         renderItem={({ item }) => (
           <TouchableOpacity style={tw`mr-5 bg-slate-100`}>
-            <View
-              style={tw`px-3 bg-white rounded-lg shadow-lg elevation-4 border border-white border-2`}
-            >
+            <View style={tw`px-2 bg-white rounded-lg shadow-sm`}>
               <Image
                 style={[
                   {
                     width: 130,
-                    height: 130,
+                    height: 100,
                     resizeMode: "contain",
                     borderRadius: 6,
                   },
@@ -53,17 +51,17 @@ const PetsList = () => {
                 ]}
                 source={item.avatar === "dog" ? dogImg : catImg}
               />
-              <Text style={tw`text-2xl text-center`}>{item.petName}</Text>
+              <Text style={tw`text-xl text-center pb-4`}>{item.petName}</Text>
             </View>
           </TouchableOpacity>
         )}
         ListFooterComponent={() => (
           <TouchableOpacity
-            style={tw`mx-10 mt-12`}
+            style={tw`mt-8`}
             onPress={() => navigation.navigate("GettingStartedScreen")}
           >
-            <Icon name="pluscircle" type="antdesign" size={70} color="white" />
-            <Text style={tw`text-white text-lg pt-4`}>Add New Pet</Text>
+            <Icon name="pluscircle" type="antdesign" size={50} color="gray" />
+            <Text style={tw`text-slate-600 text-xl mt-1`}>Add New Pet</Text>
           </TouchableOpacity>
         )}
       />

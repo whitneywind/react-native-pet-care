@@ -15,7 +15,7 @@ const navData = [
     title: "Activity",
     icon: "paw",
     iconType: "font-awesome-5",
-    screen: "LandingScreen",
+    screen: "ActivityScreen",
     color: "bg-violet-500",
   },
   {
