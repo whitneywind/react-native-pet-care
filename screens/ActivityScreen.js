@@ -6,12 +6,16 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Modal,
+  TextInput,
 } from "react-native";
 import tw from "twrnc";
-import MaggieImg from "../assets/images/maggie.jpg";
 import LongDog from "../assets/images/longdog.png";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import WalkChart from "../components/WalkChart";
+import { useState } from "react";
+import { Formik } from "formik";
 
 const ActivityScreen = () => {
   const navigation = useNavigation();
@@ -19,9 +23,15 @@ const ActivityScreen = () => {
   const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
 
-  const customResizeMode = (width, height) => {
-    return "cover";
-  };
+  const [walkModalOpen, setWalkModalOpen] = useState(false);
+
+  // const customResizeMode = (width, height) => {
+  //   return "cover";
+  // };
+
+  // const handleSubmit = () => {
+  //   console.log("handle submit fn");
+  // };
 
   return (
     <SafeAreaView style={tw` h-full`}>
@@ -30,7 +40,7 @@ const ActivityScreen = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrowleft" type="antdesign" size={25} style={tw``} />
           </TouchableOpacity>
-          <Text style={tw`text-2xl font-bold pr-2`}>
+          <Text style={tw`text-xl font-semibold pr-2`}>
             {currentPet.petName}'s Activity
           </Text>
           <Icon name="more-vertical" type="feather" size={25} style={tw``} />
@@ -58,29 +68,83 @@ const ActivityScreen = () => {
               <Text style={tw`text-lg p-1`}>Walking Streak:</Text>
               <Text style={tw`text-lg p-1`}>5 days</Text>
             </View>
-            <View
-              style={tw`flex-row justify-between w-5/6 bg-violet-300 rounded-lg py-2`}
+            <TouchableOpacity
+              onPress={() => setWalkModalOpen(!walkModalOpen)}
+              style={tw`flex-row justify-between w-5/6 bg-violet-400 rounded-lg py-2`}
             >
               <Text
-                style={tw`text-lg font-bold text-white text-right w-full text-center text-gray-700 p-1`}
+                style={tw`text-lg font-bold text-white text-right w-full text-center p-1`}
               >
                 Add New Walk
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View
-          style={tw`w-full mx-auto pb-3 bg-violet-200 h-1/3 rounded-lg mb-5`}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={walkModalOpen}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setWalkModalOpen(!walkModalOpen);
+          }}
         >
-          <Text>chart</Text>
-        </View>
+          <View style={tw`flex justify-center items-center mt-40`}>
+            <View
+              style={tw`bg-white border-2 border-violet-200 rounded-lg w-2/3 p-10 items-center shadow-lg elevation-5`}
+            >
+              <Text style={tw`text-center text-2xl`}>New Walk</Text>
+              <Formik
+                initialValues={{
+                  walkDate: "",
+                  walkLength: 0,
+                }}
+                onSubmit={(values) => {
+                  console.log("on submit in fn: ", values);
+                  setWalkModalOpen(!walkModalOpen);
+                }}
+              >
+                {({ handleChange, handleBlur, handleSubmit, values }) => (
+                  <View>
+                    <Text style={tw`text-lg mt-4`}>Walk Date</Text>
+                    <TextInput
+                      style={tw`border border-gray-300 p-2 mt-2 mb-6`}
+                      onChangeText={handleChange("walkDate")}
+                      onBlur={handleBlur("walkDate")}
+                      value={values.walkDate}
+                      required
+                    />
+                    <Text style={tw`text-lg mt-4`}>Walk Length in Minutes</Text>
+                    <View style={tw`flex-row items-center mb-6`}>
+                      <TextInput
+                        style={tw`border border-gray-300 p-2 mt-2 flex-1 text-center`}
+                        onChangeText={handleChange("walkLength")}
+                        onBlur={handleBlur("walkLength")}
+                        value={values.walkLength}
+                        placeholder="20"
+                        keyboardType="numeric"
+                      />
+                    </View>
+                    <TouchableOpacity
+                      style={tw`rounded-xl bg-violet-400 px-3 py-2`}
+                      onPress={handleSubmit}
+                    >
+                      <Text
+                        style={tw`text-white font-bold text-center text-lg`}
+                      >
+                        Submit
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </Formik>
+            </View>
+          </View>
+        </Modal>
 
-        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5`}>
-          <Text style={tw`text-xl text-center p-1 font-bold underline`}>
-            Obedience Training
-          </Text>
-          <Text style={tw`text-center text-lg`}>Coming soon!</Text>
+        <View style={tw`w-full mx-auto bg-white rounded-lg mb-5`}>
+          <WalkChart />
         </View>
 
         <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>
@@ -97,6 +161,13 @@ const ActivityScreen = () => {
               />
             </View>
           </TouchableOpacity>
+        </View>
+
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg mt-5`}>
+          <Text style={tw`text-xl text-center p-1 font-semibold`}>
+            Obedience Training
+          </Text>
+          <Text style={tw`text-center text-lg`}>Coming soon!</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

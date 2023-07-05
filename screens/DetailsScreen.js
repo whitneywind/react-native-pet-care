@@ -25,7 +25,9 @@ const DetailsScreen = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrowleft" type="antdesign" size={25} />
           </TouchableOpacity>
-          <Text style={tw`text-2xl font-bold pr-2 tracking-wide`}>Details</Text>
+          <Text style={tw`text-2xl font-semibold pr-2 tracking-wide`}>
+            Details
+          </Text>
           <Icon name="more-vertical" type="feather" size={25} />
         </View>
         <View style={tw`w-full mx-auto pb-3 mt-3 mb-2 rounded-lg`}>
