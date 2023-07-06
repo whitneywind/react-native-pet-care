@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import tw from "twrnc";
 
 const WalkChart = () => {
+  // data will consist of the last 7 entries (walkTimes only for now)
   return (
     <View style={tw`bg-violet-200 rounded-lg`}>
       <LineChart

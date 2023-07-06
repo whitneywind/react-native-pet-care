@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 const GettingStartedScreen = () => {
   // TO-DO: choose icon to use in place of photo
   // TO-DO: make button unclickable until required info filled out
+  // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
 
   const currPetData = useSelector((state) => state.pets);
   const currPet = useSelector((state) => state.pets.currentPet);
@@ -33,19 +34,44 @@ const GettingStartedScreen = () => {
 
   const navigation = useNavigation();
 
+  let defaultPetSettings = {
+    // id, name, petType, petName, petAgeYears, avatar, petGender set in form
+    breed: "unknown",
+    weight: "unknown",
+    gender: "unknown",
+    microchip: "unknown",
+    petMedicalInfo: {
+      lastVetVisit: "unknown",
+      allergies: "unknown",
+      medications: "unknown",
+    },
+    petExerciseInfo: {
+      dailyWalkGoal: "25",
+      walkingStreak: "0",
+      allWalkData: [],
+    },
+  };
+
   const setPetData = async (values) => {
     try {
       const value = await AsyncStorage.getItem("petData");
+      // get value from storage or create new array with default
+
+      // to-do: rename petData to ALLPETDATA
       let petData = value ? JSON.parse(value) : [];
-      petData.push({ ...values, id: petData.length });
+
+      //merge values from form with default values
+      let petDataEntry = {
+        ...values,
+        ...defaultPetSettings,
+        id: petData.length,
+      };
+      petData.push(petDataEntry);
 
       // await AsyncStorage.removeItem("petData");
-
       await AsyncStorage.setItem("petData", JSON.stringify(petData));
 
       // update redux store with new pet data
-
-      // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
       dispatch(setPets(petData));
       dispatch(setCurrentPet(petData[petData.length - 1]));
 
@@ -66,7 +92,6 @@ const GettingStartedScreen = () => {
             petType: "",
             petName: "",
             petAgeYears: "",
-            petAgeMonths: "",
             petGender: "",
             avatar: "",
           }}
@@ -153,14 +178,6 @@ const GettingStartedScreen = () => {
                   onBlur={handleBlur("petAgeYears")}
                   value={values.petAgeYears}
                   placeholder="Years"
-                  keyboardType="numeric"
-                />
-                <TextInput
-                  style={tw`border border-gray-300 p-2 mt-2 flex-1 text-center`}
-                  onChangeText={handleChange("petAgeMonths")}
-                  onBlur={handleBlur("petAgeMonths")}
-                  value={values.petAgeMonths}
-                  placeholder="Months"
                   keyboardType="numeric"
                 />
               </View>

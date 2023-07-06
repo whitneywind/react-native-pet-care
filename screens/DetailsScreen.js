@@ -10,13 +10,56 @@ import {
 import tw from "twrnc";
 import MaggieImg from "../assets/images/maggie.jpg";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { TextInput } from "react-native-gesture-handler";
+import { updateCurrentPetDetails, updatePetData } from "../slices/petsSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsScreen = () => {
   const navigation = useNavigation();
 
-  const petData = useSelector((state) => state.pets.pets);
+  // const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
+  // console.log(currentPet);
+
+  const dispatch = useDispatch();
+
+  const [editMode, setEditMode] = useState(false);
+  const [petName, setPetName] = useState(currentPet.petName);
+  const [breed, setBreed] = useState(currentPet.breed);
+  const [weight, setWeight] = useState(currentPet.weight);
+  const [petAgeYears, setPetAgeYears] = useState(currentPet.petAgeYears);
+  const [petGender, setPetGender] = useState(currentPet.petGender);
+  const [microchip, setMicrochip] = useState(currentPet.microchip);
+
+  // TO-DO: add function to delay state change until after user stops typing
+
+  const handleSaveChanges = async () => {
+    const updatedPetDetails = {
+      petName,
+      breed,
+      weight,
+      petAgeYears,
+      petGender,
+      microchip,
+    };
+
+    dispatch(updateCurrentPetDetails(updatedPetDetails)); // Update currentPetDetails
+    dispatch(
+      updatePetData({ petId: currentPet.id, updatedDetails: updatedPetDetails })
+    ); // Update petData
+
+    setEditMode(false);
+
+    // update local storage
+    const storage = await AsyncStorage.getItem("petData");
+    console.log(storage);
+    const parsedStorage = JSON.parse(storage);
+    // 1. get currentPet (newly updated)
+    // 2. find applicable one in storage and replace
+    // 3. await AsyncStorage.setItem("petData", JSON.stringify(petData));
+  };
 
   return (
     <SafeAreaView style={tw`h-full`}>
@@ -28,7 +71,15 @@ const DetailsScreen = () => {
           <Text style={tw`text-2xl font-semibold pr-2 tracking-wide`}>
             Details
           </Text>
-          <Icon name="more-vertical" type="feather" size={25} />
+          {!editMode ? (
+            <TouchableOpacity onPress={() => setEditMode(true)}>
+              <Icon name="wrench" type="font-awesome" size={20} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleSaveChanges}>
+              <Icon name="check" type="feather" size={20} />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={tw`w-full mx-auto pb-3 mt-3 mb-2 rounded-lg`}>
           <View style={tw`w-1/2 rounded-lg mx-auto`}>
@@ -50,7 +101,15 @@ const DetailsScreen = () => {
             style={tw`flex items-center bg-white rounded-lg mt-3 px-4 border-b border-t border-emerald-200`}
           >
             <Text style={tw`text-3xl p-2 tracking-wide font-bold`}>
-              {currentPet.petName}
+              {!editMode ? (
+                currentPet.petName
+              ) : (
+                <TextInput
+                  style={tw`text-3xl border border-gray-300 p-2`}
+                  value={petName}
+                  onChangeText={setPetName}
+                />
+              )}
             </Text>
           </View>
         </View>
@@ -65,34 +124,69 @@ const DetailsScreen = () => {
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Age:</Text>
               <Text style={tw`text-lg text-right text-gray-700 p-1 w-1/2`}>
-                {currentPet.petAgeYears} year
-                {parseInt(currentPet.petAgeYears) > 1 ? "s" : ""} old
+                {!editMode ? (
+                  currentPet.petAgeYears
+                ) : (
+                  <TextInput
+                    style={tw`text-3xl border border-gray-300 p-2`}
+                    value={petAgeYears}
+                    onChangeText={setPetAgeYears}
+                  />
+                )}
               </Text>
             </View>
 
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Breed:</Text>
-              <Text style={tw`text-lg p-1`}>Genovian Hunting</Text>
+              {!editMode ? (
+                <Text>{currentPet.breed}</Text>
+              ) : (
+                <TextInput
+                  style={tw`text-lg border border-gray-300 p-2`}
+                  value={breed}
+                  onChangeText={setBreed}
+                />
+              )}
             </View>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg text-right text-gray-700 p-1`}>
                 Weight:
               </Text>
-              <Text style={tw`text-lg text-right text-gray-700 p-1`}>
-                29 lbs
-              </Text>
+              {!editMode ? (
+                <Text>{currentPet.weight}</Text>
+              ) : (
+                <TextInput
+                  style={tw`text-3xl border border-gray-300 p-2`}
+                  value={weight}
+                  onChangeText={setWeight}
+                />
+              )}
             </View>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Gender:</Text>
-              <Text style={tw`text-lg p-1`}>female</Text>
+              {!editMode ? (
+                <Text style={tw`text-lg p-1`}>{currentPet.petGender}</Text>
+              ) : (
+                <TextInput
+                  style={tw`text-lg border border-gray-300 p-2`}
+                  value={petGender}
+                  onChangeText={setPetGender}
+                />
+              )}
             </View>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg text-right text-gray-700 p-1`}>
                 Microchip:
               </Text>
-              <Text style={tw`text-lg text-right text-gray-700 p-1`}>
-                23499G79014A
-              </Text>
+              {!editMode ? (
+                <Text style={tw`text-lg p-1`}>{currentPet.microchip}</Text>
+              ) : (
+                <TextInput
+                  style={tw`text-lg border border-gray-300 p-2`}
+                  value={microchip}
+                  onChangeText={setMicrochip}
+                />
+              )}
             </View>
           </View>
         </View>

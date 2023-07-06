@@ -15,9 +15,23 @@ export const petsSlice = createSlice({
     setCurrentPet: (state, action) => {
       state.currentPet = action.payload;
     },
+    updateCurrentPetDetails: (state, action) => {
+      state.currentPet = { ...state.currentPet, ...action.payload };
+    },
+    updatePetData: (state, action) => {
+      const { petId, updatedDetails } = action.payload;
+      state.pets = state.pets.map((pet) =>
+        pet.id === petId ? { ...pet, ...updatedDetails } : pet
+      );
+    },
   },
 });
 
-export const { setPets, setCurrentPet } = petsSlice.actions;
+export const {
+  setPets,
+  setCurrentPet,
+  updateCurrentPetDetails,
+  updatePetData,
+} = petsSlice.actions;
 
 export default petsSlice.reducer;

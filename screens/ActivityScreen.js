@@ -98,7 +98,7 @@ const ActivityScreen = () => {
               <Formik
                 initialValues={{
                   walkDate: "",
-                  walkLength: 0,
+                  walkLength: "0",
                 }}
                 onSubmit={(values) => {
                   console.log("on submit in fn: ", values);

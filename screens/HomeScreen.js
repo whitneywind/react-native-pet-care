@@ -10,17 +10,14 @@ import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
-  // TO-DO: add center component to push pets list lower
-
-  // render pets below with data from state/storage
-  // we also need the ability to change the current pet in this component
-
-  // link to pages below should reflect current pet - dynamic pages needed? or just one page where the info reflects current pet
-
   const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
 
-  console.log("curr pet as of home: ", currentPet);
+  // console.log(
+  //   "curr data as of home: ",
+  //   useSelector((state) => state.pets)
+  // );
+
   const navigation = useNavigation();
 
   if (!petData) {
