@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  Keyboard,
 } from "react-native";
 import tw from "twrnc";
 import LongDog from "../assets/images/longdog.png";
@@ -16,22 +17,27 @@ import { useSelector } from "react-redux";
 import WalkChart from "../components/WalkChart";
 import { useState } from "react";
 import { Formik } from "formik";
+import { Picker } from "@react-native-picker/picker";
+// import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const ActivityScreen = () => {
+  // TO-DO: persist walk data to state and storage
+
   const navigation = useNavigation();
 
-  const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
 
   const [walkModalOpen, setWalkModalOpen] = useState(false);
 
-  // const customResizeMode = (width, height) => {
-  //   return "cover";
-  // };
+  const [walkData, setWalkData] = useState([0, 0, 0, 0, 0, 0, 0]);
 
-  // const handleSubmit = () => {
-  //   console.log("handle submit fn");
-  // };
+  const handleSubmit = (values) => {
+    console.log("handle submit fn: ", values);
+    const newData = [...walkData];
+    const dayIndex = parseInt(values.walkDate);
+    newData[dayIndex] = parseInt(values.walkLength);
+    setWalkData(newData);
+  };
 
   return (
     <SafeAreaView style={tw` h-full`}>
@@ -90,35 +96,66 @@ const ActivityScreen = () => {
             setWalkModalOpen(!walkModalOpen);
           }}
         >
+          {/* <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            onPressOut={() => setWalkModalOpen(false)}
+          > */}
           <View style={tw`flex justify-center items-center mt-40`}>
             <View
-              style={tw`bg-white border-2 border-violet-200 rounded-lg w-2/3 p-10 items-center shadow-lg elevation-5`}
+              style={tw`bg-white border-2 border-violet-200 rounded-lg w-2/3 py-8 items-center shadow-lg elevation-5`}
             >
-              <Text style={tw`text-center text-2xl`}>New Walk</Text>
+              <TouchableOpacity
+                style={tw`absolute right-4 top-2`}
+                onPress={() => setWalkModalOpen(false)}
+              >
+                <View>
+                  <Icon
+                    name="close"
+                    type="font-awesome"
+                    size={25}
+                    color="gray"
+                  />
+                </View>
+              </TouchableOpacity>
+              <Text
+                style={tw`text-center text-2xl font-semibold text-slate-800`}
+              >
+                New Walk
+              </Text>
               <Formik
                 initialValues={{
-                  walkDate: "",
+                  walkDate: "1",
                   walkLength: "0",
                 }}
                 onSubmit={(values) => {
-                  console.log("on submit in fn: ", values);
+                  handleSubmit(values);
                   setWalkModalOpen(!walkModalOpen);
                 }}
               >
                 {({ handleChange, handleBlur, handleSubmit, values }) => (
                   <View>
-                    <Text style={tw`text-lg mt-4`}>Walk Date</Text>
-                    <TextInput
-                      style={tw`border border-gray-300 p-2 mt-2 mb-6`}
-                      onChangeText={handleChange("walkDate")}
-                      onBlur={handleBlur("walkDate")}
-                      value={values.walkDate}
-                      required
-                    />
-                    <Text style={tw`text-lg mt-4`}>Walk Length in Minutes</Text>
+                    <Text style={tw`text-lg mt-4 text-center`}>Day</Text>
+                    <Picker
+                      style={tw`border border-gray-300 mt-2`}
+                      selectedValue={values.walkDate}
+                      onValueChange={handleChange("walkDate")}
+                    >
+                      {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sunday"].map(
+                        (label, index) => (
+                          <Picker.Item
+                            key={index}
+                            label={label}
+                            value={index.toString()}
+                          />
+                        )
+                      )}
+                    </Picker>
+                    <Text style={tw`text-lg mt-4 text-center`}>
+                      Duration (min)
+                    </Text>
                     <View style={tw`flex-row items-center mb-6`}>
                       <TextInput
-                        style={tw`border border-gray-300 p-2 mt-2 flex-1 text-center`}
+                        style={tw`border border-gray-300 text-xl pb-4 pt-2 mt-2 flex-1 text-center`}
                         onChangeText={handleChange("walkLength")}
                         onBlur={handleBlur("walkLength")}
                         value={values.walkLength}
@@ -133,7 +170,7 @@ const ActivityScreen = () => {
                       <Text
                         style={tw`text-white font-bold text-center text-lg`}
                       >
-                        Submit
+                        Submit Walk
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -141,10 +178,11 @@ const ActivityScreen = () => {
               </Formik>
             </View>
           </View>
+          {/* </TouchableWithoutFeedback> */}
         </Modal>
 
         <View style={tw`w-full mx-auto bg-white rounded-lg mb-5`}>
-          <WalkChart />
+          <WalkChart walkData={walkData} />
         </View>
 
         <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>

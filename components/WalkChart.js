@@ -1,24 +1,20 @@
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import tw from "twrnc";
 
-const WalkChart = () => {
+const WalkChart = ({ walkData }) => {
   // data will consist of the last 7 entries (walkTimes only for now)
   return (
-    <View style={tw`bg-violet-200 rounded-lg`}>
+    <View style={tw`bg-violet-700 rounded-lg py-2`}>
+      <Text style={tw`py-1 text-lg font-semibold text-center text-white`}>
+        Walks this Week:
+      </Text>
       <LineChart
         data={{
           labels: ["M", "T", "W", "Th", "F", "S", "Su"],
           datasets: [
             {
-              data: [
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 100) + 1,
-              ],
+              data: walkData,
             },
           ],
         }}
@@ -47,7 +43,7 @@ const WalkChart = () => {
         style={{
           marginVertical: 8,
           //   borderRadius: 16,
-          marginLeft: -16,
+          marginLeft: -20,
         }}
       />
     </View>
