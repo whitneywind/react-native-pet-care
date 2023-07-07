@@ -21,6 +21,7 @@ const GettingStartedScreen = () => {
   // TO-DO: choose icon to use in place of photo
   // TO-DO: make button unclickable until required info filled out
   // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
+  // TO-DO: restructure stored data to be an oobject and noot an array. then update the state and all fns that access data
 
   const currPetData = useSelector((state) => state.pets);
   const currPet = useSelector((state) => state.pets.currentPet);

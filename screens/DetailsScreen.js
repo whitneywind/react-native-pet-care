@@ -11,7 +11,7 @@ import tw from "twrnc";
 import MaggieImg from "../assets/images/maggie.jpg";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { updateCurrentPetDetails, updatePetData } from "../slices/petsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const DetailsScreen = () => {
   const navigation = useNavigation();
 
-  // const petData = useSelector((state) => state.pets.pets);
+  const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
   // console.log(currentPet);
 
@@ -45,21 +45,33 @@ const DetailsScreen = () => {
       microchip,
     };
 
-    dispatch(updateCurrentPetDetails(updatedPetDetails)); // Update currentPetDetails
+    dispatch(updateCurrentPetDetails(updatedPetDetails));
     dispatch(
       updatePetData({ petId: currentPet.id, updatedDetails: updatedPetDetails })
-    ); // Update petData
+    );
 
     setEditMode(false);
 
     // update local storage
     const storage = await AsyncStorage.getItem("petData");
-    console.log(storage);
     const parsedStorage = JSON.parse(storage);
-    // 1. get currentPet (newly updated)
-    // 2. find applicable one in storage and replace
-    // 3. await AsyncStorage.setItem("petData", JSON.stringify(petData));
+    const currId = currentPet.id;
+    // 2. find applicable one in storage and replace with new
+    parsedStorage[currId] = {
+      ...currentPet,
+      ...updatedPetDetails,
+    };
+    // console.log("in storage: ", parsedStorage[currId]);
+    await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
+    const newStorage = await AsyncStorage.getItem("petData");
+    // console.log("new storage: ", newStorage);
   };
+
+  // checking that state updated correctly
+  // useEffect(() => {
+  //   console.log("currentPet:", currentPet.breed);
+  //   console.log("petData:", petData[3]);
+  // }, [currentPet, petData]);
 
   return (
     <SafeAreaView style={tw`h-full`}>
@@ -97,52 +109,52 @@ const DetailsScreen = () => {
             />
           </View>
 
-          <View
-            style={tw`flex items-center bg-white rounded-lg mt-3 px-4 border-b border-t border-emerald-200`}
-          >
-            <Text style={tw`text-3xl p-2 tracking-wide font-bold`}>
-              {!editMode ? (
-                currentPet.petName
-              ) : (
-                <TextInput
-                  style={tw`text-3xl border border-gray-300 p-2`}
-                  value={petName}
-                  onChangeText={setPetName}
-                />
-              )}
-            </Text>
+          <View style={tw`flex items-center bg-white rounded-lg mt-3 px-4`}>
+            {!editMode ? (
+              <Text style={tw`text-2xl p-3 tracking-wide font-bold`}>
+                {currentPet.petName}
+              </Text>
+            ) : (
+              <TextInput
+                style={tw`text-2xl font-bold border border-gray-300 p-3`}
+                value={petName}
+                onChangeText={setPetName}
+              />
+            )}
           </View>
         </View>
 
-        <View
-          style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5 border-b border-t border-emerald-200`}
-        >
-          <Text style={tw`text-2xl text-center p-1 pt-2 font-bold underline`}>
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5`}>
+          <Text style={tw`text-xl text-center p-1 pt-2 font-bold underline`}>
             General
           </Text>
           <View style={tw`flex items-center gap-y-2`}>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Age:</Text>
-              <Text style={tw`text-lg text-right text-gray-700 p-1 w-1/2`}>
-                {!editMode ? (
-                  currentPet.petAgeYears
-                ) : (
-                  <TextInput
-                    style={tw`text-3xl border border-gray-300 p-2`}
-                    value={petAgeYears}
-                    onChangeText={setPetAgeYears}
-                  />
-                )}
-              </Text>
+              {!editMode ? (
+                <Text style={tw`text-lg p-1`}>
+                  {currentPet.petAgeYears === "unknown"
+                    ? "---"
+                    : currentPet.petAgeYears}
+                </Text>
+              ) : (
+                <TextInput
+                  style={tw`text-xl border border-gray-300 p-2`}
+                  value={petAgeYears}
+                  onChangeText={setPetAgeYears}
+                />
+              )}
             </View>
 
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Breed:</Text>
               {!editMode ? (
-                <Text>{currentPet.breed}</Text>
+                <Text style={tw`text-lg p-1`}>
+                  {currentPet.breed === "unknown" ? "---" : currentPet.breed}
+                </Text>
               ) : (
                 <TextInput
-                  style={tw`text-lg border border-gray-300 p-2`}
+                  style={tw`text-xl border border-gray-300 p-2`}
                   value={breed}
                   onChangeText={setBreed}
                 />
@@ -153,10 +165,12 @@ const DetailsScreen = () => {
                 Weight:
               </Text>
               {!editMode ? (
-                <Text>{currentPet.weight}</Text>
+                <Text style={tw`text-lg p-1`}>
+                  {currentPet.weight === "unknown" ? "---" : currentPet.weight}
+                </Text>
               ) : (
                 <TextInput
-                  style={tw`text-3xl border border-gray-300 p-2`}
+                  style={tw`text-xl border border-gray-300 p-2`}
                   value={weight}
                   onChangeText={setWeight}
                 />
@@ -165,10 +179,12 @@ const DetailsScreen = () => {
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Gender:</Text>
               {!editMode ? (
-                <Text style={tw`text-lg p-1`}>{currentPet.petGender}</Text>
+                <Text style={tw`text-lg p-1`}>
+                  {currentPet.gender === "unknown" ? "---" : currentPet.gender}
+                </Text>
               ) : (
                 <TextInput
-                  style={tw`text-lg border border-gray-300 p-2`}
+                  style={tw`text-xl border border-gray-300 p-2`}
                   value={petGender}
                   onChangeText={setPetGender}
                 />
@@ -179,10 +195,14 @@ const DetailsScreen = () => {
                 Microchip:
               </Text>
               {!editMode ? (
-                <Text style={tw`text-lg p-1`}>{currentPet.microchip}</Text>
+                <Text style={tw`text-lg p-1`}>
+                  {currentPet.microchip === "unknown"
+                    ? "---"
+                    : currentPet.microchip}
+                </Text>
               ) : (
                 <TextInput
-                  style={tw`text-lg border border-gray-300 p-2`}
+                  style={tw`text-xl border border-gray-300 p-2`}
                   value={microchip}
                   onChangeText={setMicrochip}
                 />
@@ -191,10 +211,8 @@ const DetailsScreen = () => {
           </View>
         </View>
 
-        <View
-          style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5 border-b border-t border-emerald-200`}
-        >
-          <Text style={tw`text-2xl text-center font-bold p-1 pt-2 underline`}>
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5`}>
+          <Text style={tw`text-xl text-center font-bold p-1 pt-2 underline`}>
             Medical
           </Text>
           <View style={tw`flex items-center gap-y-2`}>
@@ -215,9 +233,7 @@ const DetailsScreen = () => {
           </View>
         </View>
 
-        <View
-          style={tw`w-full mx-auto pb-3 bg-white rounded-lg border-b border-t border-emerald-200`}
-        >
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>
           <Text style={tw`text-2xl text-center font-bold p-1`}>
             Activity Log
           </Text>
