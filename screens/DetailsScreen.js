@@ -53,18 +53,20 @@ const DetailsScreen = () => {
 
     setEditMode(false);
 
+    // TO-DO: make editing storage a reusable function !!!
+
     // update local storage
     const storage = await AsyncStorage.getItem("petData");
     const parsedStorage = JSON.parse(storage);
     const currId = currentPet.id;
-    // 2. find applicable one in storage and replace with new
+    // find applicable item in storage and replace with new
     parsedStorage[currId] = {
       ...currentPet,
       ...updatedPetDetails,
     };
     // console.log("in storage: ", parsedStorage[currId]);
     await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
-    const newStorage = await AsyncStorage.getItem("petData");
+    // const newStorage = await AsyncStorage.getItem("petData");
     // console.log("new storage: ", newStorage);
   };
 
@@ -85,10 +87,23 @@ const DetailsScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
+    console.log(JSON.stringify(result, null, 2));
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+
+      const storage = await AsyncStorage.getItem("petData");
+      const parsedStorage = JSON.parse(storage);
+      const currId = currentPet.id;
+      // find applicable item in storage and replace with new
+      parsedStorage[currId] = {
+        ...currentPet,
+        uri: image,
+      };
+      // console.log("in storage: ", parsedStorage[currId]);
+      await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
+      let storageNow = await AsyncStorage.getItem("petData");
+      console.log(storageNow);
     }
   };
 
@@ -127,7 +142,7 @@ const DetailsScreen = () => {
                 },
                 tw`self-center m-2`,
               ]}
-              source={image ? { uri: image } : MaggieImg}
+              source={currentPet.uri ? { uri: currentPet.uri } : MaggieImg}
             />
           </TouchableOpacity>
 
@@ -259,7 +274,7 @@ const DetailsScreen = () => {
           <Text style={tw`text-2xl text-center font-bold p-1`}>
             Activity Log
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
             <View style={tw`bg-emerald-300 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
