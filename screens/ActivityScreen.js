@@ -15,7 +15,7 @@ import LongDog from "../assets/images/longdog.png";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import WalkChart from "../components/WalkChart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 // import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -28,8 +28,21 @@ const ActivityScreen = () => {
   const currentPet = useSelector((state) => state.pets.currentPet);
 
   const [walkModalOpen, setWalkModalOpen] = useState(false);
-
   const [walkData, setWalkData] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [walkGoal, setWalkGoal] = useState(30);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    let newStreak = 0;
+    for (let i = walkData.length - 1; i >= 0; i--) {
+      if (parseInt(walkData[i]) >= walkGoal) {
+        newStreak++;
+      } else {
+        break;
+      }
+    }
+    setStreak(newStreak);
+  }, walkData);
 
   const handleSubmit = (values) => {
     console.log("handle submit fn: ", values);
@@ -72,7 +85,7 @@ const ActivityScreen = () => {
 
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Walking Streak:</Text>
-              <Text style={tw`text-lg p-1`}>5 days</Text>
+              <Text style={tw`text-lg p-1`}>{streak} days</Text>
             </View>
             <TouchableOpacity
               onPress={() => setWalkModalOpen(!walkModalOpen)}

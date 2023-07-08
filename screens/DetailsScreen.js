@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { updateCurrentPetDetails, updatePetData } from "../slices/petsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 const DetailsScreen = () => {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ const DetailsScreen = () => {
   const [breed, setBreed] = useState(currentPet.breed);
   const [weight, setWeight] = useState(currentPet.weight);
   const [petAgeYears, setPetAgeYears] = useState(currentPet.petAgeYears);
-  const [petGender, setPetGender] = useState(currentPet.petGender);
+  const [gender, setGender] = useState(currentPet.gender);
   const [microchip, setMicrochip] = useState(currentPet.microchip);
 
   // TO-DO: add function to delay state change until after user stops typing
@@ -41,7 +42,7 @@ const DetailsScreen = () => {
       breed,
       weight,
       petAgeYears,
-      petGender,
+      gender,
       microchip,
     };
 
@@ -67,11 +68,29 @@ const DetailsScreen = () => {
     // console.log("new storage: ", newStorage);
   };
 
-  // checking that state updated correctly
+  // test that state updated correctly
   // useEffect(() => {
-  //   console.log("currentPet:", currentPet.breed);
+  //   console.log("currentPet:", currentPet.gender);
   //   console.log("petData:", petData[3]);
   // }, [currentPet, petData]);
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   return (
     <SafeAreaView style={tw`h-full`}>
@@ -94,7 +113,10 @@ const DetailsScreen = () => {
           )}
         </View>
         <View style={tw`w-full mx-auto pb-3 mt-3 mb-2 rounded-lg`}>
-          <View style={tw`w-1/2 rounded-lg mx-auto`}>
+          <TouchableOpacity
+            style={tw`w-1/2 rounded-lg mx-auto`}
+            onPress={pickImage}
+          >
             <Image
               style={[
                 {
@@ -105,9 +127,9 @@ const DetailsScreen = () => {
                 },
                 tw`self-center m-2`,
               ]}
-              source={MaggieImg}
+              source={image ? { uri: image } : MaggieImg}
             />
-          </View>
+          </TouchableOpacity>
 
           <View style={tw`flex items-center bg-white rounded-lg mt-3 px-4`}>
             {!editMode ? (
@@ -185,8 +207,8 @@ const DetailsScreen = () => {
               ) : (
                 <TextInput
                   style={tw`text-xl border border-gray-300 p-2`}
-                  value={petGender}
-                  onChangeText={setPetGender}
+                  value={gender}
+                  onChangeText={setGender}
                 />
               )}
             </View>
