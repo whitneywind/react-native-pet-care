@@ -16,7 +16,7 @@ const navData = [
     icon: "paw",
     iconType: "font-awesome-5",
     screen: "ActivityScreen",
-    color: "bg-violet-500",
+    color: "#9BB0A5",
   },
   {
     id: "2",
@@ -24,7 +24,7 @@ const navData = [
     icon: "info",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "bg-emerald-500",
+    color: "#9BB0A5",
   },
   {
     id: "3",
@@ -32,7 +32,7 @@ const navData = [
     icon: "camera",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "bg-yellow-500",
+    color: "#9BB0A5",
   },
   {
     id: "4",
@@ -40,7 +40,7 @@ const navData = [
     icon: "heartbeat",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "bg-red-500",
+    color: "#9BB0A5",
   },
 ];
 const NavOptions = () => {
@@ -57,7 +57,7 @@ const NavOptions = () => {
           onPress={() => navigation.navigate(item.screen)}
           style={tw`w-18 flex rounded-lg`}
         >
-          <View style={tw`py-3 ${item.color} flex rounded-lg`}>
+          <View style={tw`py-3 bg-[${item.color}] flex rounded-lg`}>
             <Icon
               style={tw`p-2 rounded-full w-10 self-center text-white`}
               name={item.icon}

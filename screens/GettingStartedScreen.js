@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Formik } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 import catImg from "../assets/images/graycat.png";
@@ -21,15 +21,22 @@ const GettingStartedScreen = () => {
   // TO-DO: choose icon to use in place of photo
   // TO-DO: make button unclickable until required info filled out
   // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
-  // TO-DO: restructure stored data to be an oobject and noot an array. then update the state and all fns that access data
+  // TO-DO: restructure stored data to be an oobject and noot an array. then update the state and all fns that access data. update name too
 
   const currPetData = useSelector((state) => state.pets);
   const currPet = useSelector((state) => state.pets.currentPet);
 
-  console.log("landingscreen pet data status: ", currPetData);
-  console.log("landingscreen currPet status: ", currPet);
+  console.log(
+    "gettingstartedscreen pet data status: ",
+    JSON.stringify(currPetData, null, 2)
+  );
+  console.log(
+    "gettingstartedscreen currPet status: ",
+    JSON.stringify(currPet, null, 2)
+  );
 
   const dispatch = useDispatch();
+
   const [selectedPet, setSelectedPet] = useState("");
   const [petGender, setPetGender] = useState("");
 
@@ -58,7 +65,6 @@ const GettingStartedScreen = () => {
       const value = await AsyncStorage.getItem("petData");
       // get value from storage or create new array with default
 
-      // to-do: rename petData to ALLPETDATA
       let petData = value ? JSON.parse(value) : [];
 
       //merge values from form with default values
@@ -93,7 +99,7 @@ const GettingStartedScreen = () => {
             petType: "",
             petName: "",
             petAgeYears: "",
-            petGender: "",
+            gender: "",
             avatar: "",
           }}
           onSubmit={(values) => {

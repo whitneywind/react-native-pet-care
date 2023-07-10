@@ -3,9 +3,10 @@ import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
 import tw from "twrnc";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dogImg from "../assets/images/germanshepherd.png";
 import catImg from "../assets/images/fluffycat.png";
+import { setCurrentPet } from "../slices/petsSlice";
 
 const PetsList = () => {
   // TO-DO: remove pet functionality - filter through arr and reset storage and state
@@ -16,6 +17,14 @@ const PetsList = () => {
   // console.log("pet is array", typeof petData);
   // console.log("currpte: ", currPet);
 
+  const dispatch = useDispatch();
+
+  const handleSwitchPet = (id) => {
+    console.log("id: ", id);
+    console.log("new curr to be: ", JSON.stringify(petData[id], null, 2));
+    dispatch(setCurrentPet(petData[id]));
+  };
+
   return (
     <View style={tw`px-6`}>
       <View style={tw`w-full flex flex-row justify-between pt-1`}>
@@ -23,21 +32,19 @@ const PetsList = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate("GettingStartedScreen")}
         >
-          <Icon
-            name="pluscircle"
-            type="antdesign"
-            size={35}
-            color="rgb(107, 114, 128)"
-          />
+          <Icon name="pluscircle" type="antdesign" size={35} color="#9BB0A5" />
         </TouchableOpacity>
       </View>
       <FlatList
         data={petData}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`rounded-lg p-2`}
+        contentContainerStyle={tw`rounded-lg`}
         renderItem={({ item }) => (
-          <TouchableOpacity style={tw`mr-5 bg-slate-100`}>
+          <TouchableOpacity
+            style={tw`mr-5 bg-slate-100`}
+            onPress={() => handleSwitchPet(item.id)}
+          >
             <View style={tw`px-2 bg-white rounded-lg shadow-sm`}>
               <Image
                 style={[
@@ -47,11 +54,19 @@ const PetsList = () => {
                     resizeMode: "contain",
                     borderRadius: 6,
                   },
-                  tw`self-center`,
+                  tw`self-center mt-3`,
                 ]}
-                source={item.avatar === "dog" ? dogImg : catImg}
+                source={
+                  item.uri
+                    ? { uri: item.uri }
+                    : item.avatar === "dog"
+                    ? dogImg
+                    : catImg
+                }
               />
-              <Text style={tw`text-xl text-center pb-4`}>{item.petName}</Text>
+              <Text style={tw`text-xl text-center pb-3 pt-2 font-semibold`}>
+                {item.petName}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -60,8 +75,13 @@ const PetsList = () => {
             style={tw`mt-8`}
             onPress={() => navigation.navigate("GettingStartedScreen")}
           >
-            <Icon name="pluscircle" type="antdesign" size={50} color="gray" />
-            <Text style={tw`text-slate-600 text-xl mt-1`}>Add New Pet</Text>
+            <Icon
+              name="pluscircle"
+              type="antdesign"
+              size={50}
+              color="#9BB0A5"
+            />
+            <Text style={tw`text-slate-700 text-xl mt-2`}>Add New Pet</Text>
           </TouchableOpacity>
         )}
       />

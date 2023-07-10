@@ -98,12 +98,21 @@ const DetailsScreen = () => {
       // find applicable item in storage and replace with new
       parsedStorage[currId] = {
         ...currentPet,
-        uri: image,
+        uri: result.assets[0].uri,
       };
       // console.log("in storage: ", parsedStorage[currId]);
       await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
       let storageNow = await AsyncStorage.getItem("petData");
-      console.log(storageNow);
+      // console.log(storageNow);
+
+      // update in state
+      dispatch(updateCurrentPetDetails({ uri: result.assets[0].uri }));
+      dispatch(
+        updatePetData({
+          petId: currentPet.id,
+          updatedDetails: { ...currentPet, uri: result.assets[0].uri },
+        })
+      );
     }
   };
 
@@ -118,11 +127,11 @@ const DetailsScreen = () => {
             Details
           </Text>
           {!editMode ? (
-            <TouchableOpacity onPress={() => setEditMode(true)}>
+            <TouchableOpacity onPress={() => setEditMode(true)} style={tw``}>
               <Icon name="wrench" type="font-awesome" size={20} />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={handleSaveChanges}>
+            <TouchableOpacity onPress={handleSaveChanges} style={tw``}>
               <Icon name="check" type="feather" size={20} />
             </TouchableOpacity>
           )}
@@ -270,18 +279,31 @@ const DetailsScreen = () => {
           </View>
         </View>
 
-        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg mb-5`}>
           <Text style={tw`text-2xl text-center font-bold p-1`}>
             Activity Log
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
-            <View style={tw`bg-emerald-300 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
+            <View style={tw`bg-emerald-400 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
                 type="feather"
                 size={25}
                 style={tw``}
               />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>
+          <Text style={tw`text-2xl text-center font-bold p-1`}>
+            Remove Pet Data
+          </Text>
+          <TouchableOpacity
+            onPress={() => console.log("delete pet data (make fn later)")}
+          >
+            <View style={tw`bg-red-400 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
+              <Icon name="warning" type="antdesign" size={25} style={tw``} />
             </View>
           </TouchableOpacity>
         </View>

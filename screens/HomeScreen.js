@@ -60,7 +60,9 @@ const HomeScreen = () => {
               today?
             </Text>
           </View>
-          <TouchableOpacity style={tw``}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("DetailsScreen")}
+          >
             <Image
               style={{
                 width: 100,
@@ -68,7 +70,7 @@ const HomeScreen = () => {
                 resizeMode: "contain",
                 borderRadius: 50,
               }}
-              source={MaggieImg}
+              source={currentPet.uri ? { uri: currentPet.uri } : MaggieImg}
             />
           </TouchableOpacity>
         </View>

@@ -59,9 +59,7 @@ const ActivityScreen = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrowleft" type="antdesign" size={25} style={tw``} />
           </TouchableOpacity>
-          <Text style={tw`text-xl font-semibold pr-2`}>
-            {currentPet.petName}'s Activity
-          </Text>
+          <Text style={tw`text-xl font-semibold pr-2`}>Activity</Text>
           <Icon name="more-vertical" type="feather" size={25} style={tw``} />
         </View>
 
@@ -76,7 +74,7 @@ const ActivityScreen = () => {
               }}
             />
             <Text style={tw`text-2xl text-center p-1 font-bold underline`}>
-              Exercise
+              {currentPet.name}
             </Text>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Daily Walk Goal:</Text>
@@ -89,7 +87,7 @@ const ActivityScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => setWalkModalOpen(!walkModalOpen)}
-              style={tw`flex-row justify-between w-5/6 bg-violet-400 rounded-lg py-2`}
+              style={tw`flex-row justify-between w-5/6 bg-[#53A2FF] rounded-lg py-2`}
             >
               <Text
                 style={tw`text-lg font-bold text-white text-right w-full text-center p-1`}
@@ -115,7 +113,7 @@ const ActivityScreen = () => {
           > */}
           <View style={tw`flex justify-center items-center mt-40`}>
             <View
-              style={tw`bg-white border-2 border-violet-200 rounded-lg w-2/3 py-8 items-center shadow-lg elevation-5`}
+              style={tw`bg-white border-2 border-[#53A2FF] rounded-lg w-2/3 py-8 items-center shadow-lg elevation-5`}
             >
               <TouchableOpacity
                 style={tw`absolute right-4 top-2`}
@@ -177,7 +175,7 @@ const ActivityScreen = () => {
                       />
                     </View>
                     <TouchableOpacity
-                      style={tw`rounded-xl bg-violet-400 px-3 py-2`}
+                      style={tw`rounded-xl bg-[#53A2FF] px-3 py-2`}
                       onPress={handleSubmit}
                     >
                       <Text
@@ -203,12 +201,12 @@ const ActivityScreen = () => {
             Back to Homepage
           </Text>
           <TouchableOpacity>
-            <View style={tw`bg-violet-300 rounded-lg py-2 w-1/3 mt-1 mx-auto`}>
+            <View style={tw`bg-[#53A2FF] rounded-lg py-2 w-1/3 mt-1 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
                 type="feather"
                 size={25}
-                style={tw``}
+                color="white"
               />
             </View>
           </TouchableOpacity>
