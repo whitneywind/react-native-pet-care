@@ -11,7 +11,7 @@ import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPet, setPets } from "../slices/petsSlice";
 
 const LandingScreen = () => {
@@ -27,7 +27,7 @@ const LandingScreen = () => {
     try {
       const data = await AsyncStorage.getItem("petData");
       if (data !== null) {
-        // console.log("existing petData: ", data);
+        console.log("existing petData: ", data);
         const parsedPetData = JSON.parse(data);
         setDataExists(true);
 
@@ -39,6 +39,9 @@ const LandingScreen = () => {
       console.log("error fetching pet data in landingScreen: ", e);
     }
   };
+
+  const currentPet = useSelector((state) => state.pets.currentPet);
+  console.log("curr pet on landing page", currentPet);
 
   const navigation = useNavigation();
   return (

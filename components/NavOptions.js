@@ -16,7 +16,7 @@ const navData = [
     icon: "paw",
     iconType: "font-awesome-5",
     screen: "ActivityScreen",
-    color: "#9BB0A5",
+    color: "#10B981",
   },
   {
     id: "2",
@@ -24,7 +24,7 @@ const navData = [
     icon: "info",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#9BB0A5",
+    color: "#10B981",
   },
   {
     id: "3",
@@ -32,7 +32,7 @@ const navData = [
     icon: "camera",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#9BB0A5",
+    color: "#10B981",
   },
   {
     id: "4",
@@ -40,7 +40,7 @@ const navData = [
     icon: "heartbeat",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#9BB0A5",
+    color: "#10B981",
   },
 ];
 const NavOptions = () => {

@@ -14,14 +14,11 @@ const PetsList = () => {
   const petData = useSelector((state) => state.pets.pets);
   const currPet = useSelector((state) => state.pets.currentPet);
 
-  // console.log("pet is array", typeof petData);
-  // console.log("currpte: ", currPet);
-
   const dispatch = useDispatch();
 
   const handleSwitchPet = (id) => {
-    console.log("id: ", id);
-    console.log("new curr to be: ", JSON.stringify(petData[id], null, 2));
+    // console.log("id: ", id);
+    // console.log("new curr to be: ", JSON.stringify(petData[id], null, 2));
     dispatch(setCurrentPet(petData[id]));
   };
 
@@ -45,7 +42,7 @@ const PetsList = () => {
             style={tw`mr-5 bg-slate-100`}
             onPress={() => handleSwitchPet(item.id)}
           >
-            <View style={tw`px-2 bg-white rounded-lg shadow-sm`}>
+            <View style={tw`px-2 bg-white w-40 rounded-lg shadow-sm`}>
               <Image
                 style={[
                   {

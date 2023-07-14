@@ -13,7 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
-import { updateCurrentPetDetails, updatePetData } from "../slices/petsSlice";
+import {
+  updateCurrentPetDetails,
+  updatePetData,
+  deleteOnePet,
+  setCurrentPet,
+} from "../slices/petsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 
@@ -22,7 +27,6 @@ const DetailsScreen = () => {
 
   const petData = useSelector((state) => state.pets.pets);
   const currentPet = useSelector((state) => state.pets.currentPet);
-  // console.log(currentPet);
 
   const dispatch = useDispatch();
 
@@ -64,17 +68,15 @@ const DetailsScreen = () => {
       ...currentPet,
       ...updatedPetDetails,
     };
-    // console.log("in storage: ", parsedStorage[currId]);
     await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
-    // const newStorage = await AsyncStorage.getItem("petData");
-    // console.log("new storage: ", newStorage);
   };
 
   // test that state updated correctly
-  // useEffect(() => {
-  //   console.log("currentPet:", currentPet.gender);
-  //   console.log("petData:", petData[3]);
-  // }, [currentPet, petData]);
+  useEffect(() => {
+    console.log("currentPet:", currentPet.petName);
+    console.log("pet data length: ", petData.length);
+    console.log("petData:", petData);
+  }, [currentPet, petData]);
 
   const [image, setImage] = useState(null);
 
@@ -114,6 +116,23 @@ const DetailsScreen = () => {
         })
       );
     }
+  };
+
+  const handleDelete = async () => {
+    dispatch(deleteOnePet({ petId: currentPet.id }));
+
+    // delete from storage - TODO: should be able to update storage using updated state
+    const storage = await AsyncStorage.getItem("petData");
+    const parsedStorage = JSON.parse(storage);
+    const updatedStorage = parsedStorage.filter(
+      (pet) => pet.id !== currentPet.id
+    );
+    // console.log("hopefully filtered out: ", updatedStorage.length);
+    await AsyncStorage.setItem("petData", JSON.stringify(updatedStorage));
+
+    dispatch(setCurrentPet(petData[petData.length - 1]));
+
+    navigation.navigate("LandingScreen");
   };
 
   return (
@@ -283,7 +302,9 @@ const DetailsScreen = () => {
           <Text style={tw`text-2xl text-center font-bold p-1`}>
             Activity Log
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ActivityScreen")}
+          >
             <View style={tw`bg-emerald-400 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
@@ -299,9 +320,7 @@ const DetailsScreen = () => {
           <Text style={tw`text-2xl text-center font-bold p-1`}>
             Remove Pet Data
           </Text>
-          <TouchableOpacity
-            onPress={() => console.log("delete pet data (make fn later)")}
-          >
+          <TouchableOpacity onPress={handleDelete}>
             <View style={tw`bg-red-400 rounded-lg py-2 w-1/3 my-2 mx-auto`}>
               <Icon name="warning" type="antdesign" size={25} style={tw``} />
             </View>
