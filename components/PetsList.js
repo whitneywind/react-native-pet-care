@@ -9,17 +9,34 @@ import catImg from "../assets/images/fluffycat.png";
 import { setCurrentPet } from "../slices/petsSlice";
 
 const PetsList = () => {
-  // TO-DO: remove pet functionality - filter through arr and reset storage and state
   const navigation = useNavigation();
   const petData = useSelector((state) => state.pets.pets);
   const currPet = useSelector((state) => state.pets.currentPet);
 
+  // console.log(JSON.stringify(petData, null, 2));
+
+  // error when clicking on a pet in the pet list - seems like it's mostly the third one?
+  // pets are ending up with the same key (and thus id?)
+  // are they not being deleted correctly?
+  // could be a zombie child / stale props issue with redux
+
+  // on homescreen curr pet is coming up as undefined
+  // double check setting curr pet correctly in landingscreen and gettingstartedscreen - check entire reducer
+
   const dispatch = useDispatch();
 
   const handleSwitchPet = (id) => {
-    // console.log("id: ", id);
-    // console.log("new curr to be: ", JSON.stringify(petData[id], null, 2));
-    dispatch(setCurrentPet(petData[id]));
+    console.log("id we are using", id);
+    if (currPet && currPet.id != id) {
+      const newPetIndex = petData.findIndex((pet) => pet.id == id);
+      console.log(
+        "data we are looking to pick the curr from: ",
+        JSON.stringify(petData, null, 2)
+      );
+      console.log(newPetIndex);
+      console.log("trying to switch: ", petData[newPetIndex]);
+      dispatch(setCurrentPet(petData[newPetIndex]));
+    }
   };
 
   return (
@@ -61,7 +78,7 @@ const PetsList = () => {
                     : catImg
                 }
               />
-              <Text style={tw`text-xl text-center pb-3 pt-2 font-semibold`}>
+              <Text style={tw`text-xl text-center pb-3 pt-2`}>
                 {item.petName}
               </Text>
             </View>

@@ -4,14 +4,25 @@ import NavOptions from "../components/NavOptions";
 import Reminders from "../components/Reminders";
 import PetsList from "../components/PetsList";
 import tw from "twrnc";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MaggieImg from "../assets/images/maggie.jpg";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
+import { setCurrentPet } from "../slices/petsSlice";
 
 const HomeScreen = () => {
   const petData = useSelector((state) => state.pets.pets);
+
+  // const dispatch = useDispatch();
+
+  // dispatch(setCurrentPet(petData[petData.length - 1]));
+
   const currentPet = useSelector((state) => state.pets.currentPet);
+  const currOrNone = currentPet
+    ? currentPet
+    : "on home page no pet appareently";
+
+  // console.log("currentPet: ", currOrNone);
 
   // console.log(
   //   "curr data as of home: ",
@@ -70,7 +81,11 @@ const HomeScreen = () => {
                 resizeMode: "contain",
                 borderRadius: 50,
               }}
-              source={currentPet.uri ? { uri: currentPet.uri } : MaggieImg}
+              source={
+                currentPet && currentPet.uri
+                  ? { uri: currentPet.uri }
+                  : MaggieImg
+              }
             />
           </TouchableOpacity>
         </View>

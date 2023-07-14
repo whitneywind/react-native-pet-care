@@ -33,6 +33,10 @@ const LandingScreen = () => {
 
         // set redux store with data from storage (if exists)
         dispatch(setPets(parsedPetData));
+        // console.log(
+        //   "what im trying to set as current pet on landing: ",
+        //   parsedPetData[parsedPetData.length - 1]
+        // );
         dispatch(setCurrentPet(parsedPetData[parsedPetData.length - 1]));
       }
     } catch (e) {

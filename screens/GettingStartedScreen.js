@@ -71,7 +71,7 @@ const GettingStartedScreen = () => {
       let petDataEntry = {
         ...values,
         ...defaultPetSettings,
-        id: petData.length,
+        id: Math.floor(Math.random() * 10000) + 1,
       };
       petData.push(petDataEntry);
 

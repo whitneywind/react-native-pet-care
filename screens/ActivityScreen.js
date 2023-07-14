@@ -74,7 +74,7 @@ const ActivityScreen = () => {
               }}
             />
             <Text style={tw`text-2xl text-center p-1 font-bold underline`}>
-              {currentPet.name}
+              {currentPet.petName}
             </Text>
             <View style={tw`flex-row justify-between w-5/6`}>
               <Text style={tw`text-lg p-1`}>Daily Walk Goal:</Text>
@@ -200,7 +200,7 @@ const ActivityScreen = () => {
           <Text style={tw`text-xl text-center font-bold p-1 mt-1`}>
             Back to Homepage
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
             <View style={tw`bg-[#53A2FF] rounded-lg py-2 w-1/3 mt-1 mx-auto`}>
               <Icon
                 name="arrow-right-circle"
