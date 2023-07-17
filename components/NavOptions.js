@@ -16,7 +16,7 @@ const navData = [
     icon: "paw",
     iconType: "font-awesome-5",
     screen: "ActivityScreen",
-    color: "#10B981",
+    color: "#ffb053",
   },
   {
     id: "2",
@@ -24,7 +24,7 @@ const navData = [
     icon: "info",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#10B981",
+    color: "#ffb053",
   },
   {
     id: "3",
@@ -32,7 +32,7 @@ const navData = [
     icon: "camera",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#10B981",
+    color: "#ffb053",
   },
   {
     id: "4",
@@ -40,7 +40,7 @@ const navData = [
     icon: "heartbeat",
     iconType: "font-awesome-5",
     screen: "DetailsScreen",
-    color: "#10B981",
+    color: "#ffb053",
   },
 ];
 const NavOptions = () => {
@@ -51,7 +51,7 @@ const NavOptions = () => {
       data={navData}
       horizontal
       keyExtractor={(item) => item.id}
-      contentContainerStyle={tw`mb-10 w-[89%] mx-auto justify-between flex`}
+      contentContainerStyle={tw`mb-8 w-[89%] mx-auto justify-between flex`}
       renderItem={({ item }) => (
         <TouchableOpacity
           onPress={() => navigation.navigate(item.screen)}

@@ -38,6 +38,8 @@ const LandingScreen = () => {
         //   parsedPetData[parsedPetData.length - 1]
         // );
         dispatch(setCurrentPet(parsedPetData[parsedPetData.length - 1]));
+      } else {
+        console.log("no data saved locally");
       }
     } catch (e) {
       console.log("error fetching pet data in landingScreen: ", e);

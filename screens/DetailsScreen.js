@@ -21,6 +21,8 @@ import {
 } from "../slices/petsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import dogImg from "../assets/images/germanshepherd.png";
+import catImg from "../assets/images/fluffycat.png";
 
 const DetailsScreen = () => {
   const navigation = useNavigation();
@@ -127,7 +129,6 @@ const DetailsScreen = () => {
     const updatedStorage = parsedStorage.filter(
       (pet) => pet.id !== currentPet.id
     );
-    // console.log("hopefully filtered out: ", updatedStorage.length);
     await AsyncStorage.setItem("petData", JSON.stringify(updatedStorage));
 
     dispatch(setCurrentPet(petData[petData.length - 1]));
@@ -170,7 +171,13 @@ const DetailsScreen = () => {
                 },
                 tw`self-center m-2`,
               ]}
-              source={currentPet.uri ? { uri: currentPet.uri } : MaggieImg}
+              source={
+                currentPet.uri
+                  ? { uri: currentPet.uri }
+                  : currentPet.petType === "dog"
+                  ? dogImg
+                  : catImg
+              }
             />
           </TouchableOpacity>
 

@@ -5,10 +5,11 @@ import Reminders from "../components/Reminders";
 import PetsList from "../components/PetsList";
 import tw from "twrnc";
 import { useDispatch, useSelector } from "react-redux";
-import MaggieImg from "../assets/images/maggie.jpg";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { setCurrentPet } from "../slices/petsSlice";
+import dogImg from "../assets/images/germanshepherd.png";
+import catImg from "../assets/images/fluffycat.png";
 
 const HomeScreen = () => {
   const petData = useSelector((state) => state.pets.pets);
@@ -18,9 +19,7 @@ const HomeScreen = () => {
   // dispatch(setCurrentPet(petData[petData.length - 1]));
 
   const currentPet = useSelector((state) => state.pets.currentPet);
-  const currOrNone = currentPet
-    ? currentPet
-    : "on home page no pet appareently";
+  const currOrNone = currentPet ? currentPet : "on home page no pet apparently";
 
   // console.log("currentPet: ", currOrNone);
 
@@ -54,17 +53,22 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={tw`h-full`}>
       <ScrollView>
-        <View style={tw`pt-1 mb-5 w-full`}>
-          <Icon name="dog" type="material-community" size={40} />
+        <View style={tw`pt-1 mb-3 w-full`}>
+          <Icon
+            name="dog"
+            type="material-community"
+            size={40}
+            color={"#ffb053"}
+          />
         </View>
         <View
-          style={tw`flex flex-row w-full items-center justify-around px-4 mb-10`}
+          style={tw`flex flex-row w-full items-center justify-around px-4 mb-6`}
         >
           <View style={tw`w-[60%]`}>
             <Text style={tw`text-3xl pb-4`}>Welcome back</Text>
             <Text style={tw`text-xl text-gray-500`}>
               How is
-              <Text style={tw`font-bold text-black`}>
+              <Text style={tw`font-bold text-black text-[#ffb053]`}>
                 {" "}
                 {currentPet ? currentPet.petName : "your pet"}{" "}
               </Text>
@@ -84,7 +88,9 @@ const HomeScreen = () => {
               source={
                 currentPet && currentPet.uri
                   ? { uri: currentPet.uri }
-                  : MaggieImg
+                  : currentPet.petType === "dog"
+                  ? dogImg
+                  : catImg
               }
             />
           </TouchableOpacity>
@@ -96,6 +102,14 @@ const HomeScreen = () => {
           <Reminders />
         </View>
         <PetsList />
+        <TouchableOpacity
+          style={tw`bg-[#ffb053] w-[89%] mx-auto rounded-xl py-2`}
+          onPress={() => navigation.navigate("GettingStartedScreen")}
+        >
+          <Text style={tw`text-white text-lg text-center font-semibold`}>
+            Add Pet
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

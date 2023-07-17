@@ -23,17 +23,17 @@ const GettingStartedScreen = () => {
   // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
   // TO-DO: restructure stored data to be an oobject and noot an array. then update the state and all fns that access data. update name too
 
-  const currPetData = useSelector((state) => state.pets);
-  const currPet = useSelector((state) => state.pets.currentPet);
+  // const currPetData = useSelector((state) => state.pets);
+  // const currPet = useSelector((state) => state.pets.currentPet);
 
-  console.log(
-    "gettingstartedscreen pet data status: ",
-    JSON.stringify(currPetData, null, 2)
-  );
-  console.log(
-    "gettingstartedscreen currPet status: ",
-    JSON.stringify(currPet, null, 2)
-  );
+  // console.log(
+  //   "gettingstartedscreen pet data status: ",
+  //   JSON.stringify(currPetData, null, 2)
+  // );
+  // console.log(
+  //   "gettingstartedscreen currPet status: ",
+  //   JSON.stringify(currPet, null, 2)
+  // );
 
   const dispatch = useDispatch();
 

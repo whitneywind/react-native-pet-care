@@ -41,22 +41,22 @@ const PetsList = () => {
 
   return (
     <View style={tw`px-6`}>
-      <View style={tw`w-full flex flex-row justify-between pt-1`}>
+      {/* <View style={tw`w-full flex flex-row justify-between pb-1 bg-white`}>
         <Text style={tw`font-semibold text-2xl mb-4`}>My Pets</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate("GettingStartedScreen")}
         >
           <Icon name="pluscircle" type="antdesign" size={35} color="#9BB0A5" />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <FlatList
         data={petData}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`rounded-lg`}
+        contentContainerStyle={tw`rounded-lg mb-6`}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={tw`mr-5 bg-slate-100`}
+            style={tw`mr-5`}
             onPress={() => handleSwitchPet(item.id)}
           >
             <View style={tw`px-2 bg-white w-40 rounded-lg shadow-sm`}>
