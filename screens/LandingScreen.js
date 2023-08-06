@@ -20,24 +20,33 @@ const LandingScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    clearReduxState();
     getPetData();
+    console.log("dataExists: ", dataExists);
   }, []);
+
+  const clearReduxState = () => {
+    // Dispatch actions to clear the Redux state
+    dispatch(setPets(null)); // Set pets to null
+    dispatch(setCurrentPet(null)); // Set currentPet to null
+  };
 
   const getPetData = async () => {
     try {
       const data = await AsyncStorage.getItem("petData");
+      // await AsyncStorage.removeItem("petData");
       if (data !== null) {
         console.log("existing petData: ", data);
-        const parsedPetData = JSON.parse(data);
+
+        const parsedPetData = JSON.parse(data).filter((item) => item !== null);
+
         setDataExists(true);
+
+        console.log("parsedPetData on landing", parsedPetData.length);
 
         // set redux store with data from storage (if exists)
         dispatch(setPets(parsedPetData));
-        // console.log(
-        //   "what im trying to set as current pet on landing: ",
-        //   parsedPetData[parsedPetData.length - 1]
-        // );
-        dispatch(setCurrentPet(parsedPetData[parsedPetData.length - 1]));
+        dispatch(setCurrentPet(parsedPetData[0]));
       } else {
         console.log("no data saved locally");
       }
@@ -48,6 +57,9 @@ const LandingScreen = () => {
 
   const currentPet = useSelector((state) => state.pets.currentPet);
   console.log("curr pet on landing page", currentPet);
+
+  const currentPets = useSelector((state) => state.pets);
+  console.log("all peets in state on landing", currentPets);
 
   const navigation = useNavigation();
   return (

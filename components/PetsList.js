@@ -15,14 +15,6 @@ const PetsList = () => {
 
   // console.log(JSON.stringify(petData, null, 2));
 
-  // error when clicking on a pet in the pet list - seems like it's mostly the third one?
-  // pets are ending up with the same key (and thus id?)
-  // are they not being deleted correctly?
-  // could be a zombie child / stale props issue with redux
-
-  // on homescreen curr pet is coming up as undefined
-  // double check setting curr pet correctly in landingscreen and gettingstartedscreen - check entire reducer
-
   const dispatch = useDispatch();
 
   const handleSwitchPet = (id) => {
@@ -59,7 +51,7 @@ const PetsList = () => {
             style={tw`mr-5`}
             onPress={() => handleSwitchPet(item.id)}
           >
-            <View style={tw`px-2 bg-white w-40 rounded-lg shadow-sm`}>
+            <View style={tw`px-2 pt-3 bg-white w-40 rounded-lg shadow-sm`}>
               <Image
                 style={[
                   {

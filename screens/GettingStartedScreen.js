@@ -53,10 +53,10 @@ const GettingStartedScreen = () => {
       allergies: "unknown",
       medications: "unknown",
     },
-    petExerciseInfo: {
+    petWalkInfo: {
       dailyWalkGoal: "25",
-      walkingStreak: "0",
-      allWalkData: [],
+      walkStreak: "0",
+      allWalkData: [0, 0, 0, 0, 0, 0, 0],
     },
   };
 
@@ -66,6 +66,8 @@ const GettingStartedScreen = () => {
       // get value from storage or create new array with default
 
       let petData = value ? JSON.parse(value) : [];
+
+      console.log(petData);
 
       //merge values from form with default values
       let petDataEntry = {
@@ -104,7 +106,7 @@ const GettingStartedScreen = () => {
           }}
           onSubmit={(values) => {
             setPetData(values);
-            navigation.navigate("HomeScreen");
+            setTimeout(() => navigation.navigate("HomeScreen"), 250);
           }}
         >
           {({

@@ -18,19 +18,67 @@ import WalkChart from "../components/WalkChart";
 import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-// import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { updateStorage } from "../helpers/updateStorage";
 
 const ActivityScreen = () => {
-  // TO-DO: persist walk data to state and storage
-
   const navigation = useNavigation();
 
   const currentPet = useSelector((state) => state.pets.currentPet);
+  console.log("this is the curreent pte", currentPet);
 
   const [walkModalOpen, setWalkModalOpen] = useState(false);
   const [walkData, setWalkData] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [walkGoal, setWalkGoal] = useState(30);
   const [streak, setStreak] = useState(0);
+
+  // useEffect(() => {
+  //   console.log("Updated walkData:", walkData);
+
+  //   const updatedDetails = {
+  //     petWalkInfo: {
+  //       allWalkData: walkData,
+  //       dailyWalkGoal: walkGoal,
+  //       walkStreak: streak,
+  //     },
+  //   };
+  //   updateStorage(currentPet.id, updatedDetails);
+
+  //   console.log(updatedDetails);
+  // }, [walkData, walkGoal]);
+
+  useEffect(() => {
+    // Fetch data and update walkData
+    getData();
+  }, []);
+
+  const getData = async () => {
+    // const dataFromStorage = JSON.parse(await AsyncStorage.getItem("petData"));
+    // // this pet's data
+    // console.log(
+    //   "data on activity screen: ",
+    //   JSON.stringify(dataFromStorage[0], null, 2)
+    // );
+    // const currPetExercise = dataFromStorage[0]["petWalkInfo"];
+    // // console.log("data in activity", currPetExercise["allWalkData"]);
+    // console.log("ex data when in getData", currPetExercise);
+
+    // // setWalkData(currPetExercise["allWalkData"]);
+    // // setWalkGoal(currPetExercise["dailyWalkGoal"]);
+
+    const dataFromStorage = JSON.parse(await AsyncStorage.getItem("petData"));
+
+    if (dataFromStorage && dataFromStorage.length > 0) {
+      const currPetExercise = dataFromStorage[0]["petWalkInfo"];
+      const allWalkData = currPetExercise["allWalkData"];
+      const dailyWalkGoal = currPetExercise["dailyWalkGoal"];
+      const walkStreak = currPetExercise["walkStreak"];
+
+      setWalkData(allWalkData);
+      setWalkGoal(dailyWalkGoal);
+      setStreak(walkStreak);
+    }
+  };
 
   useEffect(() => {
     let newStreak = 0;
@@ -44,12 +92,30 @@ const ActivityScreen = () => {
     setStreak(newStreak);
   }, walkData);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     console.log("handle submit fn: ", values);
+
+    if (!currentPet) {
+      console.log("currentPet is undefined");
+      return;
+    }
+
     const newData = [...walkData];
     const dayIndex = parseInt(values.walkDate);
+    console.log(dayIndex);
     newData[dayIndex] = parseInt(values.walkLength);
     setWalkData(newData);
+
+    console.log("Updated walkData:", walkData);
+
+    const petWalkInfo = {
+      allWalkData: walkData,
+      dailyWalkGoal: walkGoal,
+      walkStreak: streak,
+    };
+    updateStorage(currentPet.id, petWalkInfo);
+
+    console.log(petWalkInfo);
   };
 
   return (
@@ -108,9 +174,9 @@ const ActivityScreen = () => {
           }}
         >
           {/* <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            onPressOut={() => setWalkModalOpen(false)}
-          > */}
+              onPress={Keyboard.dismiss}
+              onPressOut={() => setWalkModalOpen(false)}
+            > */}
           <View style={tw`flex justify-center items-center mt-40`}>
             <View
               style={tw`bg-white border-2 border-[#53A2FF] rounded-lg w-2/3 py-8 items-center shadow-lg elevation-5`}
@@ -192,9 +258,11 @@ const ActivityScreen = () => {
           {/* </TouchableWithoutFeedback> */}
         </Modal>
 
-        <View style={tw`w-full mx-auto bg-white rounded-lg mb-5`}>
-          <WalkChart walkData={walkData} />
-        </View>
+        {walkData !== undefined && (
+          <View style={tw`w-full mx-auto bg-white rounded-lg mb-5`}>
+            <WalkChart walkData={walkData} />
+          </View>
+        )}
 
         <View style={tw`w-full mx-auto pb-3 bg-white rounded-lg`}>
           <Text style={tw`text-xl text-center font-bold p-1 mt-1`}>

@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import tw from "twrnc";
-import MaggieImg from "../assets/images/maggie.jpg";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -121,6 +120,7 @@ const DetailsScreen = () => {
   };
 
   const handleDelete = async () => {
+    // doesn't seem to effectively delete...
     dispatch(deleteOnePet({ petId: currentPet.id }));
 
     // delete from storage - TODO: should be able to update storage using updated state

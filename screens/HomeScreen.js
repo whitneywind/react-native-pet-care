@@ -19,7 +19,8 @@ const HomeScreen = () => {
   // dispatch(setCurrentPet(petData[petData.length - 1]));
 
   const currentPet = useSelector((state) => state.pets.currentPet);
-  const currOrNone = currentPet ? currentPet : "on home page no pet apparently";
+  const currOrNone =
+    currentPet !== undefined ? currentPet : "on home page no pet apparently";
 
   // console.log("currentPet: ", currOrNone);
 
@@ -30,7 +31,7 @@ const HomeScreen = () => {
 
   const navigation = useNavigation();
 
-  if (!petData) {
+  if (!petData || !currentPet) {
     return (
       <SafeAreaView>
         <View style={tw`mx-auto w-1/2`}>
