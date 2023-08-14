@@ -17,11 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPet, setPets } from "../slices/petsSlice";
 import { useNavigation } from "@react-navigation/native";
 
+// FIX: other pets' photos reset after adding new pet
+
 const GettingStartedScreen = () => {
   // TO-DO: choose icon to use in place of photo
   // TO-DO: make button unclickable until required info filled out
-  // TO-DO: fix bug where after inputing first pet, the homescreen says current pet is null
-  // TO-DO: restructure stored data to be an oobject and noot an array. then update the state and all fns that access data. update name too
 
   // const currPetData = useSelector((state) => state.pets);
   // const currPet = useSelector((state) => state.pets.currentPet);
@@ -107,7 +107,7 @@ const GettingStartedScreen = () => {
   return (
     <SafeAreaView style={tw`h-full`}>
       <ScrollView contentContainerStyle={tw`w-7/8 mx-auto mt-10`}>
-        <Text style={tw`text-3xl mb-6 text-center`}>
+        <Text style={tw`text-3xl mb-4 text-center`}>
           Let's start with the basics
         </Text>
         <Formik
@@ -210,7 +210,7 @@ const GettingStartedScreen = () => {
               <Text style={tw`text-lg mt-4`}>
                 What is your pet's gender? (optional)
               </Text>
-              <View style={tw`flex-row mb-6 mt-2`}>
+              <View style={tw`flex-row mb-10 mt-2`}>
                 <TouchableOpacity
                   onPress={() => {
                     setPetGender("female");
@@ -238,7 +238,7 @@ const GettingStartedScreen = () => {
               </View>
               <TouchableOpacity
                 onPress={handleSubmit}
-                style={tw`rounded-full bg-emerald-400 py-4 mb-4`}
+                style={tw`rounded-full bg-emerald-400 py-3 mb-4`}
               >
                 <Text style={tw`text-center text-white text-lg font-semibold`}>
                   Create Pet Profile
@@ -246,7 +246,7 @@ const GettingStartedScreen = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate("HomeScreen")}
-                style={tw`rounded-full bg-red-400 py-4`}
+                style={tw`rounded-full bg-slate-400 py-3`}
               >
                 <Text style={tw`text-center text-white text-lg font-semibold`}>
                   Cancel

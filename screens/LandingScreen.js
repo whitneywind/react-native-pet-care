@@ -59,7 +59,7 @@ const LandingScreen = () => {
   console.log("curr pet on landing page", currentPet);
 
   const currentPets = useSelector((state) => state.pets.pets);
-  console.log("all peets in state on landing");
+  console.log("all pets in state on landing");
   console.log(JSON.stringify(currentPets, null, 2));
 
   const navigation = useNavigation();

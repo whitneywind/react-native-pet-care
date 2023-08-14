@@ -49,6 +49,7 @@ const DetailsScreen = () => {
       petAgeYears,
       gender,
       microchip,
+      // uri???
     };
 
     dispatch(updateCurrentPetDetails(updatedPetDetails));
@@ -69,6 +70,10 @@ const DetailsScreen = () => {
       ...currentPet,
       ...updatedPetDetails,
     };
+    console.log(
+      "pet data we are saving to storage in details: ",
+      parsedStorage
+    );
     await AsyncStorage.setItem("petData", JSON.stringify(parsedStorage));
   };
 
@@ -95,11 +100,14 @@ const DetailsScreen = () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
 
+      // FIX: id doesn't correspond to index
+
       const storage = await AsyncStorage.getItem("petData");
       const parsedStorage = JSON.parse(storage);
       const currId = currentPet.id;
+      const currInd = parsedStorage.findIndex((el) => el.id === currId);
       // find applicable item in storage and replace with new
-      parsedStorage[currId] = {
+      parsedStorage[currInd] = {
         ...currentPet,
         uri: result.assets[0].uri,
       };
