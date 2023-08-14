@@ -53,19 +53,6 @@ const ActivityScreen = () => {
   }, []);
 
   const getData = async () => {
-    // const dataFromStorage = JSON.parse(await AsyncStorage.getItem("petData"));
-    // // this pet's data
-    // console.log(
-    //   "data on activity screen: ",
-    //   JSON.stringify(dataFromStorage[0], null, 2)
-    // );
-    // const currPetExercise = dataFromStorage[0]["petWalkInfo"];
-    // // console.log("data in activity", currPetExercise["allWalkData"]);
-    // console.log("ex data when in getData", currPetExercise);
-
-    // // setWalkData(currPetExercise["allWalkData"]);
-    // // setWalkGoal(currPetExercise["dailyWalkGoal"]);
-
     const dataFromStorage = JSON.parse(await AsyncStorage.getItem("petData"));
 
     if (dataFromStorage && dataFromStorage.length > 0) {

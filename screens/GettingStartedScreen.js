@@ -67,20 +67,34 @@ const GettingStartedScreen = () => {
 
       let petData = value ? JSON.parse(value) : [];
 
-      console.log(petData);
+      console.log(
+        "this is the pet data when we submit in gettting-started :",
+        petData
+      );
+
+      const uniqueId =
+        new Date().getTime().toString() +
+        Math.random().toString(36).substr(2, 9);
 
       //merge values from form with default values
       let petDataEntry = {
         ...values,
         ...defaultPetSettings,
-        id: Math.floor(Math.random() * 10000) + 1,
+        id: uniqueId,
       };
       petData.push(petDataEntry);
+
+      console.log("after pushing onto it", petData);
+
+      // TO-DO: fix bug. below is temporary fix to nulls and duplicates
+      petData = petData.filter(
+        (el) => el !== null && petData.indexOf(el) === petData.lastIndexOf(el)
+      );
 
       // await AsyncStorage.removeItem("petData");
       await AsyncStorage.setItem("petData", JSON.stringify(petData));
 
-      // update redux store with new pet data
+      // // update redux store with new pet data
       dispatch(setPets(petData));
       dispatch(setCurrentPet(petData[petData.length - 1]));
 
@@ -106,7 +120,9 @@ const GettingStartedScreen = () => {
           }}
           onSubmit={(values) => {
             setPetData(values);
-            setTimeout(() => navigation.navigate("HomeScreen"), 250);
+            setSelectedPet("");
+            setPetGender("");
+            setTimeout(() => navigation.navigate("HomeScreen"), 500);
           }}
         >
           {({
@@ -128,7 +144,7 @@ const GettingStartedScreen = () => {
               <Text style={tw`text-lg mb-2`}>
                 What type of pet do you have? *
               </Text>
-              <View style={tw`flex w-full flex-row justify-around mb-6`}>
+              <View style={tw`flex w-full flex-row justify-around mb-2`}>
                 <TouchableOpacity
                   onPress={() => {
                     setFieldValue("petType", "dog");
@@ -180,7 +196,7 @@ const GettingStartedScreen = () => {
               <Text style={tw`text-lg mt-4`}>
                 How old is your pet? (optional)
               </Text>
-              <View style={tw`flex-row items-center mb-6`}>
+              <View style={tw`flex-row items-center mb-3`}>
                 <TextInput
                   style={tw`border border-gray-300 p-2 mt-2 flex-1 text-center`}
                   onChangeText={handleChange("petAgeYears")}
@@ -194,7 +210,7 @@ const GettingStartedScreen = () => {
               <Text style={tw`text-lg mt-4`}>
                 What is your pet's gender? (optional)
               </Text>
-              <View style={tw`flex-row mb-10 mt-2`}>
+              <View style={tw`flex-row mb-6 mt-2`}>
                 <TouchableOpacity
                   onPress={() => {
                     setPetGender("female");
@@ -222,10 +238,18 @@ const GettingStartedScreen = () => {
               </View>
               <TouchableOpacity
                 onPress={handleSubmit}
-                style={tw`rounded-full bg-emerald-500 py-4`}
+                style={tw`rounded-full bg-emerald-400 py-4 mb-4`}
               >
                 <Text style={tw`text-center text-white text-lg font-semibold`}>
                   Create Pet Profile
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("HomeScreen")}
+                style={tw`rounded-full bg-red-400 py-4`}
+              >
+                <Text style={tw`text-center text-white text-lg font-semibold`}>
+                  Cancel
                 </Text>
               </TouchableOpacity>
             </View>

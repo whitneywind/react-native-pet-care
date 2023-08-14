@@ -85,7 +85,7 @@ const PetsList = () => {
               name="pluscircle"
               type="antdesign"
               size={50}
-              color="#9BB0A5"
+              color="#10B981"
             />
             <Text style={tw`text-slate-700 text-xl mt-2`}>Add New Pet</Text>
           </TouchableOpacity>

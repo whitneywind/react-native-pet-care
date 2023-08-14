@@ -7,10 +7,10 @@ const Reminders = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={[tw`w-[89%] mx-auto rounded-xl mb-8`]}>
+    <View style={[tw`w-[89%] mx-auto rounded-xl mb-10`]}>
       <TouchableOpacity
         onPress={() => navigation.navigate("LandingScreen")}
-        style={tw`flex flex-row justify-between bg-[#53A2FF] rounded-xl items-center pl-3 pr-6 py-4 mb-4`}
+        style={tw`flex flex-row justify-between bg-[#6FD5B3] rounded-xl items-center pl-3 pr-6 py-4 mb-4`}
       >
         <View style={tw`w-[70%]`}>
           <View style={tw`flex flex-row`}>
@@ -28,7 +28,7 @@ const Reminders = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("ActivityScreen")}
-        style={tw`flex flex-row justify-between bg-[#10B981] rounded-xl items-center pl-3 pr-6 py-4`}
+        style={tw`flex flex-row justify-between bg-[#53A2FF] rounded-xl items-center pl-3 pr-6 py-4`}
       >
         <View style={tw`w-[70%]`}>
           <View style={tw`flex flex-row items-center`}>

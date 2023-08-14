@@ -53,65 +53,56 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={tw`h-full`}>
-      <ScrollView>
-        <View style={tw`pt-1 mb-3 w-full`}>
-          <Icon
-            name="dog"
-            type="material-community"
-            size={40}
-            color={"#ffb053"}
-          />
-        </View>
-        <View
-          style={tw`flex flex-row w-full items-center justify-around px-4 mb-6`}
-        >
-          <View style={tw`w-[60%]`}>
-            <Text style={tw`text-3xl pb-4`}>Welcome back</Text>
-            <Text style={tw`text-xl text-gray-500`}>
-              How is
-              <Text style={tw`font-bold text-black text-[#ffb053]`}>
-                {" "}
-                {currentPet ? currentPet.petName : "your pet"}{" "}
-              </Text>
-              today?
+      <View style={tw`pt-1 mb-3 w-full`}>
+        <Icon name="dog" type="material-community" size={40} color={"black"} />
+      </View>
+      <View
+        style={tw`flex flex-row w-full items-center justify-around px-4 mb-3`}
+      >
+        <View style={tw`w-[60%]`}>
+          <Text style={tw`text-3xl pb-4`}>Welcome back</Text>
+          <Text style={tw`text-xl text-gray-500`}>
+            How is
+            <Text style={tw`font-bold text-black`}>
+              {" "}
+              {currentPet ? currentPet.petName : "your pet"}{" "}
             </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DetailsScreen")}
-          >
-            <Image
-              style={{
-                width: 100,
-                height: 100,
-                resizeMode: "contain",
-                borderRadius: 50,
-              }}
-              source={
-                currentPet && currentPet.uri
-                  ? { uri: currentPet.uri }
-                  : currentPet.petType === "dog"
-                  ? dogImg
-                  : catImg
-              }
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <NavOptions />
-        </View>
-        <View>
-          <Reminders />
-        </View>
-        <PetsList />
-        <TouchableOpacity
-          style={tw`bg-[#ffb053] w-[89%] mx-auto rounded-xl py-2`}
-          onPress={() => navigation.navigate("GettingStartedScreen")}
-        >
-          <Text style={tw`text-white text-lg text-center font-semibold`}>
-            Add Pet
+            today?
           </Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsScreen")}>
+          <Image
+            style={{
+              width: 100,
+              height: 100,
+              resizeMode: "contain",
+              borderRadius: 50,
+            }}
+            source={
+              currentPet && currentPet.uri
+                ? { uri: currentPet.uri }
+                : currentPet.petType === "dog"
+                ? dogImg
+                : catImg
+            }
+          />
         </TouchableOpacity>
-      </ScrollView>
+      </View>
+      <View>
+        <NavOptions />
+      </View>
+      <View>
+        <Reminders />
+      </View>
+      <PetsList />
+      <TouchableOpacity
+        style={tw`bg-[#10B981] w-[89%] mx-auto rounded-xl py-2`}
+        onPress={() => navigation.navigate("GettingStartedScreen")}
+      >
+        <Text style={tw`text-white text-lg text-center font-semibold`}>
+          Add Pet
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
