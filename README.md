@@ -1,6 +1,6 @@
-# React Native Pet Care
+# React Native Pet Place
 
-React Native Pet Care is a mobile app for pet owners. With Pet Care, owners can keep track of their pets' information and activities all in one place.
+React Native Pet Place is a mobile app for pet owners. With Pet Place, owners can keep track of their pets' information and activities all in one place.
 
 Landing Screen:
 ![Site Overview](assets/AppPhotos/IMG_1692.jpg)
