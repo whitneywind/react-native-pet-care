@@ -20,4 +20,4 @@ New Pet Screen:
 
 # Pet Care
 
-React Native, JavaScript, TypeScript, Expo, Tailwind (via twrnc), react-redux, navigation, async storage
+React Native, JavaScript -> TypeScript transition in progress, Expo, Tailwind (via twrnc), react-redux, navigation, async storage
